@@ -6,4 +6,7 @@
 <path>/${PROJECT_DIR_NAME}/wRadia</path>
 <path>/${PROJECT_DIR_NAME}/test</path>
 </pydev_pathproperty>
+<pydev_pathproperty name="org.python.pydev.PROJECT_EXTERNAL_SOURCE_PATH">
+<path>C:\Anaconda3\Lib\site-packages\radia</path>
+</pydev_pathproperty>
 </pydev_project>
