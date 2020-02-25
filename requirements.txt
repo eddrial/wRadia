@@ -7,6 +7,5 @@ mock
 pytest-cov
 pytest-pylint
 coveralls
-tox
 tox-travis
 jsonschema
