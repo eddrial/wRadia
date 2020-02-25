@@ -1,15 +1,33 @@
-sudo: false
+# .travis.yml file
+cache: apt
+sudo: true
 language: python
-python:
-  - "3.6"
+python: 
+    - "2.7"
+    
+addons:
+    apt:
+        packages:
+        - libhdf5-serial-dev
+
+before_install:
+#  - sudo apt-get update
+  - wget https://repo.continuum.io/miniconda/Miniconda2-latest-Linux-x86_64.sh -O miniconda.sh;
+  - bash miniconda.sh -b -p $HOME/miniconda
+  - export PATH="$HOME/miniconda/bin:$PATH"
+  - hash -r
+  - conda config --set always_yes yes --set changeps1 no
+  - conda update -q conda
+  - conda info -a
 
 install:
-  - pip install -r requirements.txt
+    - conda env create --file environment.yml
+    - source activate test-environment 
+    - python setup.py install
+    - pip install -r requirements.txt
 
 script:
-  - tox
+    - py.test test --cov=ArchiverTool
 
-after_success:
-  - coveralls
-
-  
+after_script:
+    - coveralls
