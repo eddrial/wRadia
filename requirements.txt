@@ -1,12 +1,2 @@
 # Runtime
-numpy
-# Development
-pluggy>=0.12.0
-pytest
-mock
-pytest-cov
-pytest-pylint
-coveralls
-tox
-tox-travis
-jsonschema
+http://github.com/eddrial/aapy/tarball/master#egg=package-1.0
