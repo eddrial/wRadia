@@ -7,8 +7,11 @@ Created on 17 Dec 2019
 #import radia as rad
 import numpy as np
 
-'''class wradClaExtr():
-    def __init__(self, extrusioncentroid = 0, extrusionlength = 10, 
+class wradClaExtr():
+    def __init__(self):
+        self.a = 1
+
+    '''def __init__(self, extrusioncentroid = 0, extrusionlength = 10, 
                  extrusionprofile = [[-5,-5],[-5,5],[5,5],[5,-5]],
                   Mvector = [0,0,0], Mcolour = [1,1,1], Morientation = 'x'):
     
@@ -38,12 +41,12 @@ import numpy as np
     
     
 
-if __name__ == '__main__':
+'''if __name__ == '__main__':
     
     #make block
     #make block colour dependent on magnetisation
     #display block
-    '''help(rad.ObjDrwOpenGL)
+    help(rad.ObjDrwOpenGL)
     magcentre = np.array([0,0,0])
     
     print(magcentre)
@@ -60,11 +63,13 @@ if __name__ == '__main__':
     print(appleMainMagnet.magvector)
     
     rad.ObjDrwOpenGL(appleMainMagnet.radiablockID)
-    #uti_plot_show()'''
+    #uti_plot_show()
     
     a = 1
     
-    print(a)
-    
+    print(a)'''
+if __name__ == '__main__':
+    cl = wradClaExtr()
+    print (cl.a)
     
     
