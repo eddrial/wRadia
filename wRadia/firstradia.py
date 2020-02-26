@@ -4,10 +4,10 @@ Created on 17 Dec 2019
 @author: oqb
 '''
 
-import radia as rad
+#import radia as rad
 import numpy as np
 
-class wradClaExtr():
+'''class wradClaExtr():
     def __init__(self, extrusioncentroid = 0, extrusionlength = 10, 
                  extrusionprofile = [[-5,-5],[-5,5],[5,5],[5,-5]],
                   Mvector = [0,0,0], Mcolour = [1,1,1], Morientation = 'x'):
@@ -33,7 +33,7 @@ class wradClaExtr():
     def colourfromM(self):
         bmax = np.sqrt(self.magvector*self.magvector)
         self.colour = self.magvector/[2*max(bmax), 2*max(bmax), 2*max(bmax)]+[0.5,0.5,0.5]
-        rad.ObjDrwAtr(self.radiablockID, self.colour)
+        rad.ObjDrwAtr(self.radiablockID, self.colour)'''
     
     
     
@@ -43,7 +43,7 @@ if __name__ == '__main__':
     #make block
     #make block colour dependent on magnetisation
     #display block
-    help(rad.ObjDrwOpenGL)
+    '''help(rad.ObjDrwOpenGL)
     magcentre = np.array([0,0,0])
     
     print(magcentre)
@@ -60,7 +60,11 @@ if __name__ == '__main__':
     print(appleMainMagnet.magvector)
     
     rad.ObjDrwOpenGL(appleMainMagnet.radiablockID)
-    #uti_plot_show()
+    #uti_plot_show()'''
+    
+    a = 1
+    
+    print(a)
     
     
     
