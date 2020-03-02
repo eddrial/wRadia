@@ -1,2 +1,2 @@
 # Runtime
-https://github.com/ochubar/Radia/tree/master/cpp/py/setup.py
+https://github.com/ochubar/Radia/tree/master/env/radia_python/radia_py3_6_x64.pyd
