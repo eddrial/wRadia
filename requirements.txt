@@ -1,2 +1,2 @@
 # Runtime
-http://github.com/ochubar/Radia/tarball/master#egg=package-1.0&subdirectory=tree/master/cpp/py
+"http://github.com/ochubar/Radia/tarball/master#egg=package-1.0&subdirectory=cpp/py"
