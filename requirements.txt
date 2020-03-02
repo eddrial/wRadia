@@ -1,2 +1,2 @@
 # Runtime
-https://github.com/ochubar/Radia/tree/master/env/radia_python/radia_py3_7_x86_64.so
+https://github.com/ochubar/Radia/tree/master/cpp/py.git
