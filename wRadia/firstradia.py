@@ -6,10 +6,14 @@ Created on 17 Dec 2019
 
 #import radia as rad
 import numpy as np
+import radia as rd
 
 class wradClaExtr():
     def __init__(self):
         self.a = 1
+        
+        self.cont1 = rd.ObjRecMag([0,0,0],[2,1,3],[0.1,0.2,0.3])
+        
 
     '''def __init__(self, extrusioncentroid = 0, extrusionlength = 10, 
                  extrusionprofile = [[-5,-5],[-5,5],[5,5],[5,-5]],
@@ -71,5 +75,6 @@ class wradClaExtr():
 if __name__ == '__main__':
     cl = wradClaExtr()
     print (cl.a)
+    print (cl.cont1)
     
     
