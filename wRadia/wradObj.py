@@ -5,6 +5,8 @@ Created on 3 Mar 2020
 '''
 
 import radia as rd
+import numpy as np
+from astropy.wcs.docstrings import name
 
 class wradObjThckPgn(object):
     '''
@@ -28,5 +30,7 @@ class wradObjThckPgn(object):
         self.magnetisation = magnetisation
         
         self.radobj = rd.ObjThckPgn(self.x, self.lx, self.corners, self.magnetisation)
-        
-        return self.radobj
+    
+if __name__ == '__main__':
+    a = wradObjThckPgn(1,2,3)
+    print(a.radobj)
