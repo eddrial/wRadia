@@ -51,6 +51,15 @@ class wradObjCnt(object):
         rd.ObjAddToCnt(self.radobj,self.objectlistradobj)
         
     
+    
+    
+    
+#Material Methods
+    def wradMatAppl(self, material):
+        self.material = material
+        rd.MatApl(self.radobj,material.radobj)
+        
+        
 if __name__ == '__main__':
     a = wradObjThckPgn(2,2,[[-5,-5],[-5,5],[5,5],[5,-5]],'x',[4,3,2])
     print(a.radobj)

@@ -2,6 +2,8 @@
 Created on 6 Mar 2020
 
 @author: oqb
+
+Just a collection of different classes, as each radMatLin is a different kind of object, and contains no methods
 '''
 
 import radia as rd
