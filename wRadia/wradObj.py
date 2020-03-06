@@ -41,17 +41,15 @@ class wradObjCnt(object):
         
         for i in range(len(objectlist)):
             rd.ObjAddToCnt(self.radobj, self.objectlist[i].radobj)
-        
-class wradObjAddToCnt(object):
-    
-    def __init__(self,existingobject, objectlist):
-        self.radobj = existingobject.radobj
+            
+    def wradObjAddToCnt(self, objectlist):
         self.objectlist = objectlist
         self.objectlistradobj = []
         for i in range (len(self.objectlist)):
             self.objectlistradobj.append(objectlist[i].radobj)
             
-        rd.ObjAddToCnt(existingobject.radobj,self.objectlistradobj)
+        rd.ObjAddToCnt(self.radobj,self.objectlistradobj)
+        
     
 if __name__ == '__main__':
     a = wradObjThckPgn(2,2,[[-5,-5],[-5,5],[5,5],[5,-5]],'x',[4,3,2])
