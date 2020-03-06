@@ -44,10 +44,23 @@ class wradObjCnt(object):
             rd.ObjAddToCnt(self.radobj, self.objectlist[i].radobj)
             
     def wradObjAddToCnt(self, objectlist):
-        self.objectlist = objectlist
-        self.objectlistradobj = []
-        for i in range (len(self.objectlist)):
+        #self.objectlist = objectlist
+        
+        if hasattr(self,'objectlist'):
+            pass
+        else:
+            self.objectlist = []
+        
+        if hasattr(self, 'objectlistradobj'):
+            pass
+        else:
+            self.objectlistradobj = []
+        
+        for i in range (len(objectlist)):
             self.objectlistradobj.append(objectlist[i].radobj)
+            self.objectlist.append(objectlist[i])
+        
+        
             
         rd.ObjAddToCnt(self.radobj,self.objectlistradobj)
         
