@@ -34,6 +34,7 @@ class wradObjThckPgn(object):
     
 class wradObjCnt(object):
     
+    #Container Methods
     def __init__(self,objectlist = []):
         self.objectlist = objectlist
         
@@ -51,6 +52,15 @@ class wradObjCnt(object):
         rd.ObjAddToCnt(self.radobj,self.objectlistradobj)
         
     
+    #Subdivision Methods
+    
+    def wradObjDivMag(self,subdivision = [3,3,3]):
+        '''subdivision is in x,y,z'''
+        
+        self.subdivision = subdivision
+        rd.ObjDivMag(self.radobj, self.subdivision)
+    
+
     
     
     
@@ -58,6 +68,15 @@ class wradObjCnt(object):
     def wradMatAppl(self, material):
         self.material = material
         rd.MatApl(self.radobj,material.radobj)
+        
+        
+    #Graphics Methods
+    def wradObjDrwAtr(self, colour, linethickness):
+        self.colour = colour
+        self.linethickness = linethickness
+        
+        rd.ObjDrwAtr(self.radobj,self.colour, self.linethickness)
+        
         
         
 if __name__ == '__main__':
