@@ -43,13 +43,13 @@ class wradObjCnt(object):
         for i in range(len(objectlist)):
             rd.ObjAddToCnt(self.radobj, self.objectlist[i].radobj)
             
-    def wradObjAddToCnt(self, objectlist):
+    def wradObjAddToCnt(self, objectlist = []):
         #self.objectlist = objectlist
         
         if hasattr(self,'objectlist'):
             pass
         else:
-            self.objectlist = []
+            self.objectlist = objectlist
         
         if hasattr(self, 'objectlistradobj'):
             pass
@@ -83,12 +83,21 @@ class wradObjCnt(object):
         rd.MatApl(self.radobj,material.radobj)
         
         
-    #Graphics Methods
+#Graphics Methods
     def wradObjDrwAtr(self, colour, linethickness):
         self.colour = colour
         self.linethickness = linethickness
         
         rd.ObjDrwAtr(self.radobj,self.colour, self.linethickness)
+        
+        
+#solving methods
+    def wradSolve(self, prec_r, iter_r):
+        self.solved = 1
+        
+        rd.Solve(self.radobj,prec_r,iter_r)
+        
+        
         
         
         
