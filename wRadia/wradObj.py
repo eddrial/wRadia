@@ -31,6 +31,10 @@ class wradObjThckPgn(object):
         
         self.radobj = rd.ObjThckPgn(self.x, self.lx, self.corners,self.extrusion_direction, self.magnetisation)
         
+    def wradMatAppl(self,material):
+        self.material = material
+        self.magnetisation = self.material.M
+        rd.MatApl(self.radobj,material.radobj)
     
 class wradObjCnt(object):
     
@@ -79,8 +83,14 @@ class wradObjCnt(object):
     
 #Material Methods
     def wradMatAppl(self, material):
-        self.material = material
-        rd.MatApl(self.radobj,material.radobj)
+        try:
+            self.objectlist
+        except AttributeError:
+            self.material = material
+            rd.MatApl(self.radobj,material.radobj)
+        
+        for obj in self.objectlist:
+            obj.wradMatAppl(material)
         
         
 #Graphics Methods
@@ -96,7 +106,7 @@ class wradObjCnt(object):
         self.solved = 1
         
         rd.Solve(self.radobj,prec_r,iter_r)
-        
+    
         
         
         
