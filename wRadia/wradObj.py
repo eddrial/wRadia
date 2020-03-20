@@ -29,6 +29,21 @@ class wradObjThckPgn(object):
         self.extrusion_direction = extrusion_direction
         self.magnetisation = magnetisation
         
+        self.vertices = []
+        
+        if self.extrusion_direction == 'x':
+            for corner in corners:
+                self.vertices.append([self.x - self.lx/2.0,corner[0],corner[1]])
+                self.vertices.append([self.x + self.lx/2.0,corner[0],corner[1]])
+        elif self.extrusion_direction == 'y':
+            for corner in corners:
+                self.vertices.append([corner[1],self.x - self.lx/2.0,corner[0]])
+                self.vertices.append([corner[1],self.x + self.lx/2.0,corner[0]])
+        elif self.extrusion_direction == 'z':
+            for corner in corners:
+                self.vertices.append([corner[0], corner[1],self.x - self.lx/2.0])
+                self.vertices.append([corner[0], corner[1],self.x + self.lx/2.0])
+        
         self.radobj = rd.ObjThckPgn(self.x, self.lx, self.corners,self.extrusion_direction, self.magnetisation)
         
     def wradMatAppl(self,material):
@@ -112,5 +127,20 @@ class wradObjCnt(object):
         
         
 if __name__ == '__main__':
-    a = wradObjThckPgn(2,2,[[-5,-5],[-5,5],[5,5],[5,-5]],'x',[4,3,2])
-    print(a.radobj)
+    tr = 5
+    ve = 3
+    
+    x = wradObjThckPgn(2,2,[[-tr,-ve],[-tr,ve],[tr,ve],[tr,-ve]],'x',[4,3,2])
+    print(x.vertices)
+    
+    y = wradObjThckPgn(2,2,[[-tr,-ve],[-tr,ve],[tr,ve],[tr,-ve]],'y',[4,3,2])
+    print(y.vertices)
+    
+    z = wradObjThckPgn(2,2,[[-tr,-ve],[-tr,ve],[tr,ve],[tr,-ve]],'z',[4,3,2])
+    print(z.vertices)
+    
+    rd.ObjDrwOpenGL(x.radobj)
+    rd.ObjDrwOpenGL(y.radobj)
+    rd.ObjDrwOpenGL(z.radobj)
+    
+    input("Press Enter to continue...")
