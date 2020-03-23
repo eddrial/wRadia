@@ -55,7 +55,7 @@ class wradObjThckPgn(object):
         #Spatial Transform Methods
     def wradRotate(self,pivot_origin, pivot_vector, rot_magnitude):
         '''trying to write a rotation function'''
-        print(self.vertices[0])
+        #print(self.vertices[0])
         u = self.vertices[0] - pivot_origin
         q = R.from_quat([pivot_vector[0] * np.sin(rot_magnitude/2.0), 
              pivot_vector[1] * np.sin(rot_magnitude/2.0),
@@ -63,7 +63,8 @@ class wradObjThckPgn(object):
              np.cos(rot_magnitude/2.0)])
         
         self.vertices[0] = q.apply(u)
-        print(self.vertices[0])
+        self.magnetisation = q.apply(self.magnetisation)
+        #print(self.vertices[0])
         
                 #rotate object
         rota = rd.TrfRot(pivot_origin,pivot_vector,rot_magnitude)
@@ -125,15 +126,15 @@ class wradObjCnt(object):
         try:
             self.objectlist
         except AttributeError:
-            print(self.vertices[0])
-            u = self.vertices[0] - pivot_origin
+            #print(self.vertices[0])
+            ''''u = self.vertices[0] - pivot_origin
             q = R.from_quat([np.cos(rot_magnitude/2.0), 
                  pivot_vector[0] * np.sin(rot_magnitude/2.0), 
                  pivot_vector[1] * np.sin(rot_magnitude/2.0),
                  pivot_vector[2] * np.sin(rot_magnitude/2.0)])
             
             self.vertices[0] = q.apply(u)
-            print(self.vertices[0])
+            print(self.vertices[0])'''
             
                     # u' = quq*
             #u is point
@@ -144,6 +145,21 @@ class wradObjCnt(object):
             
             #magnetisation
 
+        try:
+            self.colour
+            q = R.from_quat([pivot_vector[0] * np.sin(rot_magnitude/2.0), 
+                 pivot_vector[1] * np.sin(rot_magnitude/2.0),
+                 pivot_vector[2] * np.sin(rot_magnitude/2.0),
+                 np.cos(rot_magnitude/2.0),])
+            
+            #magcol = [(2+x) / 4.0 for x in [0,AII.M,0]]
+            tmpcol = [(4*x - 2) for x in self.colour]
+            
+            tmpcol = q.apply(tmpcol)
+            self.colour = [(2+x) / 4.0 for x in tmpcol]
+            rd.ObjDrwAtr(self.radobj,self.colour, self.linethickness)
+        except:
+            pass
         
         for obj in self.objectlist:
             obj.wradRotate(pivot_origin, pivot_vector, rot_magnitude)
