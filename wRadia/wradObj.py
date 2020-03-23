@@ -6,6 +6,7 @@ Created on 3 Mar 2020
 
 import radia as rd
 import numpy as np
+from scipy.spatial.transform import Rotation as R
 
 class wradObjThckPgn(object):
     '''
@@ -29,20 +30,20 @@ class wradObjThckPgn(object):
         self.extrusion_direction = extrusion_direction
         self.magnetisation = magnetisation
         
-        self.vertices = []
+        self.vertices = np.zeros((2*len(corners),3))
         
         if self.extrusion_direction == 'x':
-            for corner in corners:
-                self.vertices.append([self.x - self.lx/2.0,corner[0],corner[1]])
-                self.vertices.append([self.x + self.lx/2.0,corner[0],corner[1]])
+            for i in range(len(corners)):
+                self.vertices[i,:] = np.array([self.x - self.lx/2.0,corners[i][0],corners[i][1]])
+                self.vertices[i+len(corners),:] = np.array([self.x + self.lx/2.0,corners[i][0],corners[i][1]])
         elif self.extrusion_direction == 'y':
-            for corner in corners:
-                self.vertices.append([corner[1],self.x - self.lx/2.0,corner[0]])
-                self.vertices.append([corner[1],self.x + self.lx/2.0,corner[0]])
+            for i in range(len(corners)):
+                self.vertices[i,:] = np.array([corners[i][1],self.x - self.lx/2.0,corners[i][0]])
+                self.vertices[i+len(corners),:] = np.array([corners[i][1],self.x + self.lx/2.0,corners[i][0]])
         elif self.extrusion_direction == 'z':
-            for corner in corners:
-                self.vertices.append([corner[0], corner[1],self.x - self.lx/2.0])
-                self.vertices.append([corner[0], corner[1],self.x + self.lx/2.0])
+            for i in range(len(corners)):
+                self.vertices[i,:] = np.array([corners[i][0],corners[i][1],self.x - self.lx/2.0])
+                self.vertices[i+len(corners),:] = np.array([corners[i][0],corners[i][1],self.x + self.lx/2.0])
         
         self.radobj = rd.ObjThckPgn(self.x, self.lx, self.corners,self.extrusion_direction, self.magnetisation)
         
@@ -50,6 +51,28 @@ class wradObjThckPgn(object):
         self.material = material
         self.magnetisation = self.material.M
         rd.MatApl(self.radobj,material.radobj)
+        
+        #Spatial Transform Methods
+    def wradRotate(self,pivot_origin, pivot_vector, rot_magnitude):
+        '''trying to write a rotation function'''
+        print(self.vertices[0])
+        u = self.vertices[0] - pivot_origin
+        q = R.from_quat([np.cos(rot_magnitude/2.0), 
+             pivot_vector[0] * np.sin(rot_magnitude/2.0), 
+             pivot_vector[1] * np.sin(rot_magnitude/2.0),
+             pivot_vector[2] * np.sin(rot_magnitude/2.0)])
+        
+        self.vertices[0] = q.apply(u)
+        print(self.vertices[0])
+            
+                    # u' = quq*
+            #u is point
+            #q is quaternion representation of rotation angle (cos (th/2), sin (th/2)i, sin(th/2)j, sin (th/2)k)  
+            
+            
+            #vertices
+            
+            #magnetisation
     
 class wradObjCnt(object):
     
@@ -92,7 +115,53 @@ class wradObjCnt(object):
         self.subdivision = subdivision
         rd.ObjDivMag(self.radobj, self.subdivision)
     
+    #Spatial Transform Methods
+    def wradRotate(self,pivot_origin, pivot_vector, rot_magnitude):
+        '''trying to write a rotation function'''
+        try:
+            self.objectlist
+        except AttributeError:
+            print(self.vertices[0])
+            u = self.vertices[0] - pivot_origin
+            q = R.from_quat([np.cos(rot_magnitude/2.0), 
+                 pivot_vector[0] * np.sin(rot_magnitude/2.0), 
+                 pivot_vector[1] * np.sin(rot_magnitude/2.0),
+                 pivot_vector[2] * np.sin(rot_magnitude/2.0)])
+            
+            self.vertices[0] = q.apply(u)
+            print(self.vertices[0])
+            
+                    # u' = quq*
+            #u is point
+            #q is quaternion representation of rotation angle (cos (th/2), sin (th/2)i, sin(th/2)j, sin (th/2)k)  
+            
+            
+            #vertices
+            
+            #magnetisation
 
+        
+        for obj in self.objectlist:
+            obj.wradRotate(pivot_origin, pivot_vector, rot_magnitude)
+        
+        #rotate object
+        rota = rd.TrfRot(pivot_origin,pivot_vector,rot_magnitude)
+        rd.TrfOrnt(self.radobj,rota)
+        
+        
+
+        
+        pass
+    
+    def wradTranslate(self):
+        #vertices
+        #magnetisation
+        pass
+    
+    def wradReflect(self):
+        #vertices
+        #magnetisation
+        pass
     
     
     
