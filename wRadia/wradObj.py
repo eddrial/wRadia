@@ -57,13 +57,17 @@ class wradObjThckPgn(object):
         '''trying to write a rotation function'''
         print(self.vertices[0])
         u = self.vertices[0] - pivot_origin
-        q = R.from_quat([np.cos(rot_magnitude/2.0), 
-             pivot_vector[0] * np.sin(rot_magnitude/2.0), 
+        q = R.from_quat([pivot_vector[0] * np.sin(rot_magnitude/2.0), 
              pivot_vector[1] * np.sin(rot_magnitude/2.0),
-             pivot_vector[2] * np.sin(rot_magnitude/2.0)])
+             pivot_vector[2] * np.sin(rot_magnitude/2.0),
+             np.cos(rot_magnitude/2.0)])
         
         self.vertices[0] = q.apply(u)
         print(self.vertices[0])
+        
+                #rotate object
+        rota = rd.TrfRot(pivot_origin,pivot_vector,rot_magnitude)
+        rd.TrfOrnt(self.radobj,rota)
             
                     # u' = quq*
             #u is point
@@ -145,8 +149,8 @@ class wradObjCnt(object):
             obj.wradRotate(pivot_origin, pivot_vector, rot_magnitude)
         
         #rotate object
-        rota = rd.TrfRot(pivot_origin,pivot_vector,rot_magnitude)
-        rd.TrfOrnt(self.radobj,rota)
+        #rota = rd.TrfRot(pivot_origin,pivot_vector,rot_magnitude)
+        #rd.TrfOrnt(self.radobj,rota)
         
         
 
