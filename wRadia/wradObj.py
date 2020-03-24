@@ -54,30 +54,30 @@ class wradObjThckPgn(object):
         
         #Spatial Transform Methods
     def wradRotate(self,pivot_origin, pivot_vector, rot_magnitude):
-        '''trying to write a rotation function'''
-        #print(self.vertices[0])
-        u = self.vertices[0] - pivot_origin
-        q = R.from_quat([pivot_vector[0] * np.sin(rot_magnitude/2.0), 
-             pivot_vector[1] * np.sin(rot_magnitude/2.0),
-             pivot_vector[2] * np.sin(rot_magnitude/2.0),
-             np.cos(rot_magnitude/2.0)])
+        '''trying to write a rotation function
+            # u' = quq*
+            #u is point
+            #q is quaternion representation of rotation angle ( sin (th/2)i, sin(th/2)j, sin (th/2)k, cos (th/2))'''
         
-        self.vertices[0] = q.apply(u)
+        #rotate vertices
+        for i in range (len(self.vertices)):
+            u = self.vertices[i] - pivot_origin
+            q = R.from_quat([pivot_vector[0] * np.sin(rot_magnitude/2.0), 
+                             pivot_vector[1] * np.sin(rot_magnitude/2.0),
+                             pivot_vector[2] * np.sin(rot_magnitude/2.0),
+                             np.cos(rot_magnitude/2.0)])
+        
+            self.vertices[i] = q.apply(u)
+        
+        #rotate magnetisation vector
         self.magnetisation = q.apply(self.magnetisation)
-        #print(self.vertices[0])
         
-                #rotate object
+        #rotate radia object
         rota = rd.TrfRot(pivot_origin,pivot_vector,rot_magnitude)
         rd.TrfOrnt(self.radobj,rota)
             
-                    # u' = quq*
-            #u is point
-            #q is quaternion representation of rotation angle (cos (th/2), sin (th/2)i, sin(th/2)j, sin (th/2)k)  
-            
-            
-            #vertices
-            
-            #magnetisation
+  
+
     
 class wradObjCnt(object):
     
@@ -123,55 +123,35 @@ class wradObjCnt(object):
     #Spatial Transform Methods
     def wradRotate(self,pivot_origin, pivot_vector, rot_magnitude):
         '''trying to write a rotation function'''
+        
+        #is this a container, or a primitive... check for object list
         try:
             self.objectlist
         except AttributeError:
-            #print(self.vertices[0])
-            ''''u = self.vertices[0] - pivot_origin
-            q = R.from_quat([np.cos(rot_magnitude/2.0), 
-                 pivot_vector[0] * np.sin(rot_magnitude/2.0), 
-                 pivot_vector[1] * np.sin(rot_magnitude/2.0),
-                 pivot_vector[2] * np.sin(rot_magnitude/2.0)])
-            
-            self.vertices[0] = q.apply(u)
-            print(self.vertices[0])'''
-            
-                    # u' = quq*
-            #u is point
-            #q is quaternion representation of rotation angle (cos (th/2), sin (th/2)i, sin(th/2)j, sin (th/2)k)  
-            
-            
-            #vertices
-            
-            #magnetisation
+            pass
 
+        #is colour applied at this level?
         try:
             self.colour
+            #if yes rotate colour
             q = R.from_quat([pivot_vector[0] * np.sin(rot_magnitude/2.0), 
                  pivot_vector[1] * np.sin(rot_magnitude/2.0),
                  pivot_vector[2] * np.sin(rot_magnitude/2.0),
                  np.cos(rot_magnitude/2.0),])
             
-            #magcol = [(2+x) / 4.0 for x in [0,AII.M,0]]
             tmpcol = [(4*x - 2) for x in self.colour]
             
             tmpcol = q.apply(tmpcol)
+            
             self.colour = [(2+x) / 4.0 for x in tmpcol]
             rd.ObjDrwAtr(self.radobj,self.colour, self.linethickness)
         except:
             pass
         
+        #recur down to overloaded function
         for obj in self.objectlist:
             obj.wradRotate(pivot_origin, pivot_vector, rot_magnitude)
         
-        #rotate object
-        #rota = rd.TrfRot(pivot_origin,pivot_vector,rot_magnitude)
-        #rd.TrfOrnt(self.radobj,rota)
-        
-        
-
-        
-        pass
     
     def wradTranslate(self):
         #vertices
