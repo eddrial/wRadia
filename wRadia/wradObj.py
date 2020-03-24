@@ -75,6 +75,18 @@ class wradObjThckPgn(object):
         #rotate radia object
         rota = rd.TrfRot(pivot_origin,pivot_vector,rot_magnitude)
         rd.TrfOrnt(self.radobj,rota)
+        
+    def wradTranslate(self,translation_vector):
+        '''trying to write a translation function'''
+
+        #translate vertices
+        for i in range (len(self.vertices)):
+            self.vertices[i] = self.vertices[i] + translation_vector
+        
+        
+        #rotate radia object
+        tran = rd.TrfTrsl(translation_vector)
+        rd.TrfOrnt(self.radobj,tran)
             
   
 
@@ -153,10 +165,19 @@ class wradObjCnt(object):
             obj.wradRotate(pivot_origin, pivot_vector, rot_magnitude)
         
     
-    def wradTranslate(self):
-        #vertices
-        #magnetisation
-        pass
+    def wradTranslate(self, translation_vector):
+        '''trying to write a translation function'''
+        
+        #is this a container, or a primitive... check for object list
+        try:
+            self.objectlist
+        except AttributeError:
+            pass
+        
+        #recur down to overloaded function
+        for obj in self.objectlist:
+            obj.wradTranslate(translation_vector)#vertices
+
     
     def wradReflect(self):
         #vertices
