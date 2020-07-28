@@ -52,6 +52,10 @@ class wradObjThckPgn(object):
         self.magnetisation = self.material.M
         rd.MatApl(self.radobj,material.radobj)
         
+    def wradSolve(self, prec_r, iter_r):
+        self.solved = 1
+        
+        rd.Solve(self.radobj,prec_r,iter_r)
         #Spatial Transform Methods
     def wradRotate(self,pivot_origin, pivot_vector, rot_magnitude):
         '''trying to write a rotation function
