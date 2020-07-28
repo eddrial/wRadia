@@ -58,14 +58,14 @@ class wradObjThckPgn(object):
             # u' = quq*
             #u is point
             #q is quaternion representation of rotation angle ( sin (th/2)i, sin(th/2)j, sin (th/2)k, cos (th/2))'''
-        
-        #rotate vertices
-        for i in range (len(self.vertices)):
-            u = self.vertices[i] - pivot_origin
-            q = R.from_quat([pivot_vector[0] * np.sin(rot_magnitude/2.0), 
+        q = R.from_quat([pivot_vector[0] * np.sin(rot_magnitude/2.0), 
                              pivot_vector[1] * np.sin(rot_magnitude/2.0),
                              pivot_vector[2] * np.sin(rot_magnitude/2.0),
                              np.cos(rot_magnitude/2.0)])
+        #rotate vertices
+        for i in range (len(self.vertices)):
+            u = self.vertices[i] - pivot_origin
+            
         
             self.vertices[i] = q.apply(u)
         
