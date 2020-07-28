@@ -26,3 +26,6 @@ class wradMatLin(object):
         self.M = M
         
         self.radobj = rd.MatLin(self.ksi,self.M)
+        
+if __name__ == '__main__':
+    pass
