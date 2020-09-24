@@ -124,6 +124,12 @@ class wradObjThckPgn(object):
         #rotate radia object
         tran = rd.TrfTrsl(translation_vector)
         rd.TrfOrnt(self.radobj,tran)
+        
+    def wradFieldInvert(self):
+        '''trying to write a field inversion function'''
+        for i in range(len(self.magnetisation)):
+            self.magnetisation[i] = -self.magnetisation[i]
+        rd.TrfInv(self.radobj)
             
   
 
@@ -260,7 +266,35 @@ class wradObjCnt(object):
         #magnetisation
         pass
     
-    
+    def wradFieldInvert(self):
+        '''trying to write a field inversion function'''
+        
+        #is this a container, or a primitive... check for object list
+        try:
+            self.objectlist
+        except AttributeError:
+            pass
+        
+        #is colour applied at this level?
+        try:
+            self.colour
+            #if yes invert the colour colour
+            tmp = np.zeros(3)
+        #reflect colour
+            tmpcol = [(4*x - 2) for x in self.colour]
+            
+            tmpcol[0] = -tmpcol[0]
+            tmpcol[1] = -tmpcol[1]
+            tmpcol[2] = -tmpcol[2]
+            
+            self.colour = [(2+x) / 4.0 for x in tmpcol]
+            rd.ObjDrwAtr(self.radobj,self.colour, self.linethickness)
+        except:
+            pass
+        
+        #recur down to overloaded function
+        for obj in self.objectlist:
+            obj.wradFieldInvert()#vertices
     
 #Material Methods
     def wradMatAppl(self, material):

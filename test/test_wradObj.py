@@ -153,7 +153,7 @@ class Test_wradObjThckPgn_resulting_fields_z(unittest.TestCase):
                 b = rd.Fld(self.a.radobj,'bxbybz',[0,0,i*6.0])
                 np.testing.assert_almost_equal(b,[0,0,0.3544116293114718])
     
-class Test_wradRotate_thickpolygon_resulting_fields_z(unittest.TestCase):    
+class Test_wradRotate_thickpolygon(unittest.TestCase):    
     #wradRotate. Testing for thick polygons being rotated
     def setUp(self):
         
@@ -169,24 +169,24 @@ class Test_wradRotate_thickpolygon_resulting_fields_z(unittest.TestCase):
         
         #self.a.wradSolve(0.001, 10000)
         
-    
-    def test_rotate_cube_Z_magnetisation1(self):
-        self.a.wradRotate([0,0,0], [1,0,0], np.pi)
-        self.a.wradSolve(0.001, 10000)
-        for i in range(-1,2,2):
-            with self.subTest(i = i):
-                b = rd.Fld(self.a.radobj,'bxbybz',[0,0,i*6.0])
-                np.testing.assert_almost_equal(b,[0,0,-0.3544116293114718])
-                
-    def test_rotate_cube_Z_magnetisation2(self):
+    def test_rotate_cube_Z_bfield1(self):
         self.a.wradRotate([0,0,0], [1,0,0], np.pi/2.0)
         self.a.wradSolve(0.001, 10000)
         for i in range(-1,2,2):
             with self.subTest(i = i):
                 b = rd.Fld(self.a.radobj,'bxbybz',[0,i*6.0,0])
                 np.testing.assert_almost_equal(b,[0,-0.3544116293114718,0])
+
+    def test_rotate_cube_Z_bfield2(self):
+        self.a.wradRotate([0,0,0], [1,0,0], np.pi)
+        self.a.wradSolve(0.001, 10000)
+        for i in range(-1,2,2):
+            with self.subTest(i = i):
+                b = rd.Fld(self.a.radobj,'bxbybz',[0,0,i*6.0])
+                np.testing.assert_almost_equal(b,[0,0,-0.3544116293114718])
+
                 
-    def test_rotate_cube_Z_magnetisation3(self):
+    def test_rotate_cube_Z_bfield3(self):
         self.a.wradRotate([0,0,0], [1,0,0], 3*np.pi/2.0)
         self.a.wradSolve(0.001, 10000)
         for i in range(-1,2,2):
@@ -194,15 +194,35 @@ class Test_wradRotate_thickpolygon_resulting_fields_z(unittest.TestCase):
                 b = rd.Fld(self.a.radobj,'bxbybz',[0,i*6.0,0])
                 np.testing.assert_almost_equal(b,[0,0.3544116293114718,0])
                 
-    def test_rotate_cube_Z_magnetisation4(self):
+    def test_rotate_cube_Z_bfield4(self):
         self.a.wradRotate([0,0,0], [1,0,0], 2*np.pi)
         self.a.wradSolve(0.001, 10000)
         for i in range(-1,2,2):
             with self.subTest(i = i):
                 b = rd.Fld(self.a.radobj,'bxbybz',[0,0,i*6.0])
                 np.testing.assert_almost_equal(b,[0,0,0.3544116293114718])
+                
+    def test_rotate_cube_Z_magnetisation1(self):
+        self.a.wradRotate([0,0,0], [1,0,0], np.pi/2.0)
+        self.a.wradSolve(0.001, 10000)
+        np.testing.assert_almost_equal(self.a.magnetisation, [0.,-1.,0.])
+
+    def test_rotate_cube_Z_magnetisation2(self):
+        self.a.wradRotate([0,0,0], [1,0,0], np.pi)
+        self.a.wradSolve(0.001, 10000)
+        np.testing.assert_almost_equal(self.a.magnetisation, [0.,0.,-1.])
+
+    def test_rotate_cube_Z_magnetisation3(self):
+        self.a.wradRotate([0,0,0], [1,0,0], 3*np.pi/2.0)
+        self.a.wradSolve(0.001, 10000)
+        np.testing.assert_almost_equal(self.a.magnetisation, [0.,1.,0.])
+                
+    def test_rotate_cube_Z_magnetisation4(self):
+        self.a.wradRotate([0,0,0], [1,0,0], 2*np.pi)
+        self.a.wradSolve(0.001, 10000)
+        np.testing.assert_almost_equal(self.a.magnetisation, [0.,0.,1.])
     
-    def test_wradRotate_thickpolygon_vetices(self):
+    def test_wradRotate_thickpolygon_vertices(self):
         #test the vertices rotate correctly
         rd.UtiDelAll()
         a = 1
