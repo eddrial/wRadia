@@ -5,7 +5,7 @@ Created on 3 Mar 2020
 '''
 import unittest
 import radia as rd
-import wRadia as wrd
+import wradia as wrd
 import numpy as np
 from _pytest.outcomes import fail
 
@@ -15,10 +15,10 @@ class Test_wradObjThckPgn(unittest.TestCase):
     #test wrad object initialisation
     def setUp(self):
         rd.UtiDelAll()
-        self.ax = wrd.wradObj.wradObjThckPgn(0, 5, [[0,10],[10,10],[10,0],[0,0]],'x',[1,2,3])
-        self.ay = wrd.wradObj.wradObjThckPgn(0, 5, [[0,10],[10,10],[10,0],[0,0]],'y',[1,2,3])
-        self.az = wrd.wradObj.wradObjThckPgn(0, 5, [[0,10],[10,10],[10,0],[0,0]],'z',[1,2,3])
-    ###wradObjThckPgn __init__ tests
+        self.ax = wrd.wrad_obj.wradObjThckPgn(0, 5, [[0,10],[10,10],[10,0],[0,0]],'x',[1,2,3])
+        self.ay = wrd.wrad_obj.wradObjThckPgn(0, 5, [[0,10],[10,10],[10,0],[0,0]],'y',[1,2,3])
+        self.az = wrd.wrad_obj.wradObjThckPgn(0, 5, [[0,10],[10,10],[10,0],[0,0]],'z',[1,2,3])
+    ###wradObjThckPgn athenaii tests
     def test_wradObjThckPgn_exists(self):
         assert self.ax.radobj == 1
         
@@ -64,9 +64,9 @@ class Test_wradMatAppl(unittest.TestCase):
         rd.UtiDelAll()
         self.ksi = [.019, .06]
         self.M = [0,0,1.5]
-        self.material = wrd.wradMat.wradMatLin(self.ksi,self.M)
+        self.material = wrd.wrad_mat.wradMatLin(self.ksi,self.M)
         
-        self.a = wrd.wradObj.wradObjThckPgn(0, 5, [[0,10],[10,10],[10,0],[0,0]],'x',[1,2,3])
+        self.a = wrd.wrad_obj.wradObjThckPgn(0, 5, [[0,10],[10,10],[10,0],[0,0]],'x',[1,2,3])
         self.a.wradMatAppl(self.material)
     
     def test_wradMatAppl_material(self):
@@ -86,9 +86,9 @@ class Test_wradObjThckPgn_resulting_fields_x(unittest.TestCase):
         rd.UtiDelAll()
         self.ksi = [.019, .06]
         self.M = [1,0,0]
-        self.material = wrd.wradMat.wradMatLin(self.ksi,self.M)
+        self.material = wrd.wrad_mat.wradMatLin(self.ksi,self.M)
         
-        self.a = wrd.wradObj.wradObjThckPgn(0, 10, [[-5,5],[5,5],[5,-5],[-5,-5]],'x',[0,0,0])
+        self.a = wrd.wrad_obj.wradObjThckPgn(0, 10, [[-5,5],[5,5],[5,-5],[-5,-5]],'x',[0,0,0])
         self.a.wradMatAppl(self.material)
         
         self.a.wradSolve(0.001, 10000)
@@ -111,9 +111,9 @@ class Test_wradObjThckPgn_resulting_fields_y(unittest.TestCase):
         rd.UtiDelAll()
         self.ksi = [.019, .06]
         self.M = [0,1,0]
-        self.material = wrd.wradMat.wradMatLin(self.ksi,self.M)
+        self.material = wrd.wrad_mat.wradMatLin(self.ksi,self.M)
         
-        self.a = wrd.wradObj.wradObjThckPgn(0, 10, [[-5,5],[5,5],[5,-5],[-5,-5]],'x',[0,0,0])
+        self.a = wrd.wrad_obj.wradObjThckPgn(0, 10, [[-5,5],[5,5],[5,-5],[-5,-5]],'x',[0,0,0])
         self.a.wradMatAppl(self.material)
         
         self.a.wradSolve(0.001, 10000)
@@ -136,9 +136,9 @@ class Test_wradObjThckPgn_resulting_fields_z(unittest.TestCase):
         rd.UtiDelAll()
         self.ksi = [.019, .06]
         self.M = [0,0,1]
-        self.material = wrd.wradMat.wradMatLin(self.ksi,self.M)
+        self.material = wrd.wrad_mat.wradMatLin(self.ksi,self.M)
         
-        self.a = wrd.wradObj.wradObjThckPgn(0, 10, [[-5,5],[5,5],[5,-5],[-5,-5]],'x',[0,0,0])
+        self.a = wrd.wrad_obj.wradObjThckPgn(0, 10, [[-5,5],[5,5],[5,-5],[-5,-5]],'x',[0,0,0])
         self.a.wradMatAppl(self.material)
         
         self.a.wradSolve(0.001, 10000)
@@ -160,9 +160,9 @@ class Test_wradRotate_thickpolygon(unittest.TestCase):
         rd.UtiDelAll()
         self.ksi = [.019, .06]
         self.M = [0,0,1]
-        self.material = wrd.wradMat.wradMatLin(self.ksi,self.M)
+        self.material = wrd.wrad_mat.wradMatLin(self.ksi,self.M)
         
-        self.a = wrd.wradObj.wradObjThckPgn(0, 10, [[-5,5],[5,5],[5,-5],[-5,-5]],'x',[0,0,0])
+        self.a = wrd.wrad_obj.wradObjThckPgn(0, 10, [[-5,5],[5,5],[5,-5],[-5,-5]],'x',[0,0,0])
         self.a.wradMatAppl(self.material)
         
         #self.a.wradRotate([0,0,0], [1,0,0], np.pi)

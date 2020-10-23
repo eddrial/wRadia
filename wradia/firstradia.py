@@ -15,7 +15,7 @@ class wradClaExtr():
         self.cont1 = rd.ObjRecMag([0,0,0],[2,1,3],[0.1,0.2,0.3])
         
 
-    '''def __init__(self, extrusioncentroid = 0, extrusionlength = 10, 
+    '''def athenaii(self, extrusioncentroid = 0, extrusionlength = 10, 
                  extrusionprofile = [[-5,-5],[-5,5],[5,5],[5,-5]],
                   Mvector = [0,0,0], Mcolour = [1,1,1], Morientation = 'x'):
     

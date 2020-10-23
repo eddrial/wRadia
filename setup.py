@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(
-      name="wRadia",
+      name="wradia",
       author = "Ed Rial",
       version = "0.1",
       description='Python wrapper for Radia, easily accessible object attributes',

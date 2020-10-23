@@ -1,2 +1,2 @@
-from . import wradMat
-from . import wradObj
+from wRadia import wrad_mat
+from wRadia import wrad_obj
