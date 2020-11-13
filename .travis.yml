@@ -9,7 +9,7 @@ install:
   
 script:
   - docker exec env pip install -e .
-  - docker exec env python -m pytest --cov=src/optidenvtest test/
+  - docker exec env python -m pytest --cov=wradia test/
 
 after_script:
   - docker exec env coveralls
