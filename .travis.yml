@@ -4,15 +4,13 @@ services:
   - docker
 
 install:
-  - docker pull $DOCKER_USERNAME/$DOCKER_REPO || true
-  - docker build --pull --cache-from $DOCKER_USERNAME/$DOCKER_REPO --tag $DOCKER_USERNAME/$DOCKER_REPO .
-  - docker run -itd --name env --env-file <(env | grep TRAVIS) -v $(pwd):/tmp/repo/ -w /tmp/repo/ $DOCKER_USERNAME/$DOCKER_REPO
-
+  - docker pull eddrial/opt-id:env-v3
+  - docker run -itd --name env --env-file <(env | grep TRAVIS) -v $(pwd):/tmp/repo/ -w /tmp/repo/ josswhittle/opt-id:env-v3
+  
 script:
-  - docker exec env python -m pytest tests/
+  - docker exec env pip install -e .
+  - docker exec env python -m pytest --cov=src/optidenvtest tests/
 
 after_script:
+  - docker exec env coveralls
   - docker stop env
-  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-  - docker push $DOCKER_USERNAME/$DOCKER_REPO
-
