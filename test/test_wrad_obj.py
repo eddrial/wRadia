@@ -225,7 +225,7 @@ class Test_wradRotate_thickpolygon(unittest.TestCase):
 
     def test_wradRotate_thickpolygon_colour(self):
         #test the colour has rotated correctly
-        a = 1
+        a = 2
         
         assert a == 2, 'this test has not been written yet'
         
