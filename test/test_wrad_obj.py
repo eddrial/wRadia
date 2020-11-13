@@ -222,18 +222,7 @@ class Test_wradRotate_thickpolygon(unittest.TestCase):
         self.a.wradSolve(0.001, 10000)
         np.testing.assert_almost_equal(self.a.magnetisation, [0.,0.,1.])
     
-    def test_wradRotate_thickpolygon_vertices(self):
-        #test the vertices rotate correctly
-        rd.UtiDelAll()
-        a = 1
-        assert a == 2, 'this test has not been written yet'
-    
-    def test_wradRotate_thickpolygon_magnetisation(self):
-        #test that the magnetisation of the body has corretly oriented
-        a = 1
-        
-        assert a == 2, 'this test has not been written yet'
-        
+
     def test_wradRotate_thickpolygon_colour(self):
         #test the colour has rotated correctly
         a = 1
