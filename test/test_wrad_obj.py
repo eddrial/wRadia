@@ -79,6 +79,26 @@ class Test_wradMatAppl(unittest.TestCase):
     def test_wradMatAppl_magnetisation_overwrite(self):
         assert self.material.M == self.a.magnetisation
         
+class Test_wradSolve(unittest.TestCase):
+
+    def setUp(self):
+        rd.UtiDelAll()
+        self.ksi = [.019, .06]
+        self.M = [0,0,1.5]
+        self.material = wrd.wrad_mat.wradMatLin(self.ksi,self.M)
+        
+        self.a = wrd.wrad_obj.wradObjThckPgn(0, 5, [[0,10],[10,10],[10,0],[0,0]],'x',[1,2,3])
+        self.a.wradMatAppl(self.material)
+    
+    
+    def wradSolve_not_solved(self):
+        assert hasattr(self, 'solved') == False, 'attribute set before solution solved'
+    
+    def test_wradSolve_solved(self):
+        self.test_wradSolve_write_result()
+        
+        assert self.solved == 1, 'solver has not run'
+        
 class Test_wradObjThckPgn_resulting_fields_x(unittest.TestCase):
     #check effect of magnetisation being written in each of three dimensions
     def setUp(self):

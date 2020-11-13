@@ -450,13 +450,9 @@ class wradObjCnt(object):
         
 #solving methods
     def wradSolve(self, prec_r = 0.001, iter_r = 1000):
-        self.solved = 1
         
         rd.Solve(self.radobj,prec_r,iter_r)
-    
-        
-        
-        
+        self.solved = 1
         
 if __name__ == '__main__':
     tr = 5
