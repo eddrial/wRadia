@@ -4,8 +4,8 @@ Created on 26 Feb 2020
 @author: oqb
 '''
 import unittest
-from wRadia import firstradia as wr
-from wRadia import wradObj as wrd
+from wradia import firstradia as wr
+from wradia import wrad_obj as wrd
 import radia as rd
 import numpy as np
 
