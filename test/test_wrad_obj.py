@@ -95,7 +95,7 @@ class Test_wradSolve(unittest.TestCase):
         assert hasattr(self, 'solved') == False, 'attribute set before solution solved'
     
     def test_wradSolve_solved(self):
-        self.a.wradSolve()
+        self.a.wradSolve(0.001, 1000)
         
         assert self.solved == 1, 'solver has not run'
         
