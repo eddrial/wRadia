@@ -5,6 +5,9 @@ python:
     - "2.7"
     - "3.6"
     - "3.7"
+
+services:
+  - docker
     
 addons:
     apt:
@@ -22,13 +25,18 @@ before_install:
   - conda info -a
 
 install:
-    - conda env create --file environment.yml
-    - source activate test-environment 
-    - python setup.py install
-    - pip install -r requirements.txt
+    - docker pull eddrial/opt-id:env-v3
+    - docker run -itd --name env --env-file <(env | grep TRAVIS) -v $(pwd):/tmp/repo/ -w /tmp/repo/ josswhittle/opt-id:env-v3
+
+#    - conda env create --file environment.yml
+#    - source activate test-environment 
+#    - python setup.py install
+#    - pip install -r requirements.txt
 
 script:
-    - py.test test --cov=wRadia
+    - docker exec env pip install -e .
+    - docker exec env python -m pytest --cov=wRadia
+#    - py.test test --cov=wRadia
 
 after_script:
     - coveralls
