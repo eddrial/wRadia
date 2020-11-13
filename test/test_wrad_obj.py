@@ -97,7 +97,7 @@ class Test_wradSolve(unittest.TestCase):
     def test_wradSolve_solved(self):
         self.a.wradSolve(0.001, 1000)
         
-        assert self.solved == 1, 'solver has not run'
+        assert self.a.solved == 1, 'solver has not run'
         
 class Test_wradObjThckPgn_resulting_fields_x(unittest.TestCase):
     #check effect of magnetisation being written in each of three dimensions
