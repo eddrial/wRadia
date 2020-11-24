@@ -385,7 +385,23 @@ class Test_wradRotate_thickpolygon(unittest.TestCase):
         
         assert a == 2, 'this test has not been written yet'
         
-    
+class Test_wradReflect_thickpolygon(unittest.TestCase):    
+    #wradRotate. Testing for thick polygons being rotated
+    def setUp(self):
+        
+        rd.UtiDelAll()
+        self.ksi = [.019, .06]
+        self.M = [1,0,0]
+        self.material = wrd.wrad_mat.wradMatLin(self.ksi,self.M)
+        
+        self.a = wrd.wrad_obj.wradObjThckPgn(10, 10, [[-5,5],[5,5],[5,-5],[-5,-5]],'x',[0,0,0])
+        self.a.wradMatAppl(self.material)
+        
+    def test_reflect_cube_x_plane_X_magnetisation(self):
+        
+        self.a.wradReflect([0,0,0], [1,0,0])
+        np.testing.assert_almost_equal(self.a.magnetisation, [-1.,0.,0.])
+        
         
     
     
