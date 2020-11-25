@@ -394,17 +394,69 @@ class Test_wradReflect_thickpolygon(unittest.TestCase):
         self.M = [1,0,0]
         self.material = wrd.wrad_mat.wradMatLin(self.ksi,self.M)
         
+        Mx = [1,0,0]
+        My = [0,1,0]
+        Mz = [0,0,1]
+        
+        materiala = self.material = wrd.wrad_mat.wradMatLin(self.ksi,Mx)
+        materialb = self.material = wrd.wrad_mat.wradMatLin(self.ksi,My)
+        materialc = self.material = wrd.wrad_mat.wradMatLin(self.ksi,Mz)
+        
         self.a = wrd.wrad_obj.wradObjThckPgn(10, 10, [[-5,5],[5,5],[5,-5],[-5,-5]],'x',[0,0,0])
-        self.a.wradMatAppl(self.material)
+        self.a.wradMatAppl(materiala)
+        
+        self.b = wrd.wrad_obj.wradObjThckPgn(10, 10, [[-5,5],[5,5],[5,-5],[-5,-5]],'x',[0,0,0])
+        self.b.wradMatAppl(materialb)
+        
+        self.c = wrd.wrad_obj.wradObjThckPgn(10, 10, [[-5,5],[5,5],[5,-5],[-5,-5]],'x',[0,0,0])
+        self.c.wradMatAppl(materialc)
         
     def test_reflect_cube_x_plane_X_magnetisation(self):
         
         self.a.wradReflect([0,0,0], [1,0,0])
         np.testing.assert_almost_equal(self.a.magnetisation, [-1.,0.,0.])
         
+    def test_reflect_cube_y_plane_X_magnetisation(self):
+        
+        self.a.wradReflect([0,0,0], [0,1,0])
+        np.testing.assert_almost_equal(self.a.magnetisation, [1.,0.,0.])
+        
+    def test_reflect_cube_z_plane_X_magnetisation(self):
+        
+        self.a.wradReflect([0,0,0], [0,0,1])
+        np.testing.assert_almost_equal(self.a.magnetisation, [1.,0.,0.])
+    
+    
+    def test_reflect_cube_x_plane_Y_magnetisation(self):
+        
+        self.b.wradReflect([0,0,0], [1,0,0])
+        np.testing.assert_almost_equal(self.b.magnetisation, [0.,1.,0.])
+        
+    def test_reflect_cube_y_plane_Y_magnetisation(self):
+        
+        self.b.wradReflect([0,0,0], [0,1,0])
+        np.testing.assert_almost_equal(self.b.magnetisation, [0.,-1.,0.])
+        
+    def test_reflect_cube_z_plane_Y_magnetisation(self):
+        
+        self.b.wradReflect([0,0,0], [0,0,1])
+        np.testing.assert_almost_equal(self.b.magnetisation, [0.,1.,0.])
         
     
-    
+    def test_reflect_cube_x_plane_Z_magnetisation(self):
+        
+        self.c.wradReflect([0,0,0], [1,0,0])
+        np.testing.assert_almost_equal(self.c.magnetisation, [0.,0.,1.])
+        
+    def test_reflect_cube_y_plane_Z_magnetisation(self):
+        
+        self.c.wradReflect([0,0,0], [0,1,0])
+        np.testing.assert_almost_equal(self.c.magnetisation, [0.,0.,1.])
+        
+    def test_reflect_cube_z_plane_Z_magnetisation(self):
+        
+        self.c.wradReflect([0,0,0], [0,0,1])
+        np.testing.assert_almost_equal(self.c.magnetisation, [0.,0.,-1.])
         
     
 if __name__ == "__main__":
