@@ -394,71 +394,217 @@ class Test_wradReflect_thickpolygon(unittest.TestCase):
         self.M = [1,0,0]
         self.material = wrd.wrad_mat.wradMatLin(self.ksi,self.M)
         
-        Mx = [1,0,0]
-        My = [0,1,0]
-        Mz = [0,0,1]
+        Mxp = [1,0,0]
+        Mxn = [-1,0,0]
+        Myp = [0,1,0]
+        Myn = [0,-1,0]
+        Mzp = [0,0,1]
+        Mzn = [0,0,-1]
         
-        materiala = self.material = wrd.wrad_mat.wradMatLin(self.ksi,Mx)
-        materialb = self.material = wrd.wrad_mat.wradMatLin(self.ksi,My)
-        materialc = self.material = wrd.wrad_mat.wradMatLin(self.ksi,Mz)
+        materialxp = wrd.wrad_mat.wradMatLin(self.ksi,Mxp)
+        materialxn = wrd.wrad_mat.wradMatLin(self.ksi,Mxn)
+        materialyp = wrd.wrad_mat.wradMatLin(self.ksi,Myp)
+        materialyn = wrd.wrad_mat.wradMatLin(self.ksi,Myn)
+        materialzp = wrd.wrad_mat.wradMatLin(self.ksi,Mzp)
+        materialzn = wrd.wrad_mat.wradMatLin(self.ksi,Mzn)
         
-        self.a = wrd.wrad_obj.wradObjThckPgn(10, 10, [[-5,5],[5,5],[5,-5],[-5,-5]],'x',[0,0,0])
-        self.a.wradMatAppl(materiala)
+        self.blockxp = wrd.wrad_obj.wradObjThckPgn(10, 10, [[-5,5],[5,5],[5,-5],[-5,-5]],'x',[0,0,0])
+        self.blockxp.wradMatAppl(materialxp)
         
-        self.b = wrd.wrad_obj.wradObjThckPgn(10, 10, [[-5,5],[5,5],[5,-5],[-5,-5]],'x',[0,0,0])
-        self.b.wradMatAppl(materialb)
+        self.blockxn = wrd.wrad_obj.wradObjThckPgn(10, 10, [[-5,5],[5,5],[5,-5],[-5,-5]],'x',[0,0,0])
+        self.blockxn.wradMatAppl(materialxn)
         
-        self.c = wrd.wrad_obj.wradObjThckPgn(10, 10, [[-5,5],[5,5],[5,-5],[-5,-5]],'x',[0,0,0])
-        self.c.wradMatAppl(materialc)
+        self.blockyp = wrd.wrad_obj.wradObjThckPgn(10, 10, [[-5,5],[5,5],[5,-5],[-5,-5]],'x',[0,0,0])
+        self.blockyp.wradMatAppl(materialyp)
+        
+        self.blockyn = wrd.wrad_obj.wradObjThckPgn(10, 10, [[-5,5],[5,5],[5,-5],[-5,-5]],'x',[0,0,0])
+        self.blockyn.wradMatAppl(materialyn)
+        
+        self.blockzp = wrd.wrad_obj.wradObjThckPgn(10, 10, [[-5,5],[5,5],[5,-5],[-5,-5]],'x',[0,0,0])
+        self.blockzp.wradMatAppl(materialzp)
+        
+        self.blockzn = wrd.wrad_obj.wradObjThckPgn(10, 10, [[-5,5],[5,5],[5,-5],[-5,-5]],'x',[0,0,0])
+        self.blockzn.wradMatAppl(materialzn)
         
     def test_reflect_cube_x_plane_X_magnetisation(self):
         
-        self.a.wradReflect([0,0,0], [1,0,0])
-        np.testing.assert_almost_equal(self.a.magnetisation, [-1.,0.,0.])
+        self.blockxp.wradReflect([0,0,0], [1,0,0])
+        np.testing.assert_almost_equal(self.blockxp.magnetisation, self.blockxn.magnetisation)
         
     def test_reflect_cube_y_plane_X_magnetisation(self):
         
-        self.a.wradReflect([0,0,0], [0,1,0])
-        np.testing.assert_almost_equal(self.a.magnetisation, [1.,0.,0.])
+        originalMagnetisation = self.blockxp.magnetisation
+        self.blockxp.wradReflect([0,0,0], [0,1,0])
+        np.testing.assert_almost_equal(self.blockxp.magnetisation, originalMagnetisation)
         
     def test_reflect_cube_z_plane_X_magnetisation(self):
         
-        self.a.wradReflect([0,0,0], [0,0,1])
-        np.testing.assert_almost_equal(self.a.magnetisation, [1.,0.,0.])
+        originalMagnetisation = self.blockxp.magnetisation
+        self.blockxp.wradReflect([0,0,0], [0,0,1])
+        np.testing.assert_almost_equal(self.blockxp.magnetisation, originalMagnetisation)
     
     
     def test_reflect_cube_x_plane_Y_magnetisation(self):
         
-        self.b.wradReflect([0,0,0], [1,0,0])
-        np.testing.assert_almost_equal(self.b.magnetisation, [0.,1.,0.])
+        originalMagnetisation = self.blockyp.magnetisation
+        self.blockyp.wradReflect([0,0,0], [1,0,0])
+        np.testing.assert_almost_equal(self.blockyp.magnetisation, originalMagnetisation)
         
     def test_reflect_cube_y_plane_Y_magnetisation(self):
         
-        self.b.wradReflect([0,0,0], [0,1,0])
-        np.testing.assert_almost_equal(self.b.magnetisation, [0.,-1.,0.])
+        self.blockyp.wradReflect([0,0,0], [0,1,0])
+        np.testing.assert_almost_equal(self.blockyp.magnetisation, self.blockyn.magnetisation)
         
     def test_reflect_cube_z_plane_Y_magnetisation(self):
         
-        self.b.wradReflect([0,0,0], [0,0,1])
-        np.testing.assert_almost_equal(self.b.magnetisation, [0.,1.,0.])
+        originalMagnetisation = self.blockyp.magnetisation
+        self.blockyp.wradReflect([0,0,0], [0,0,1])
+        np.testing.assert_almost_equal(self.blockyp.magnetisation, originalMagnetisation)
         
     
     def test_reflect_cube_x_plane_Z_magnetisation(self):
         
-        self.c.wradReflect([0,0,0], [1,0,0])
-        np.testing.assert_almost_equal(self.c.magnetisation, [0.,0.,1.])
+        originalMagnetisation = self.blockzp.magnetisation
+        self.blockzp.wradReflect([0,0,0], [1,0,0])
+        np.testing.assert_almost_equal(self.blockzp.magnetisation, originalMagnetisation)
         
     def test_reflect_cube_y_plane_Z_magnetisation(self):
         
-        self.c.wradReflect([0,0,0], [0,1,0])
-        np.testing.assert_almost_equal(self.c.magnetisation, [0.,0.,1.])
+        originalMagnetisation = self.blockzp.magnetisation
+        self.blockzp.wradReflect([0,0,0], [0,1,0])
+        np.testing.assert_almost_equal(self.blockzp.magnetisation, originalMagnetisation)
         
     def test_reflect_cube_z_plane_Z_magnetisation(self):
         
-        self.c.wradReflect([0,0,0], [0,0,1])
-        np.testing.assert_almost_equal(self.c.magnetisation, [0.,0.,-1.])
+        self.blockzp.wradReflect([0,0,0], [0,0,1])
+        np.testing.assert_almost_equal(self.blockzp.magnetisation, self.blockzn.magnetisation)
+        
+    def test_reflect_cube_x_plane_X_colour(self):
+        
+        self.blockxp.wradReflect([0,0,0], [1,0,0])
+        np.testing.assert_almost_equal(self.blockxp.colour, self.blockxn.colour)
+        
+    def test_reflect_cube_y_plane_X_colour(self):
+        
+        originalcolour = self.blockxp.colour
+        self.blockxp.wradReflect([0,0,0], [0,1,0])
+        np.testing.assert_almost_equal(self.blockxp.colour, originalcolour)
+        
+    def test_reflect_cube_z_plane_X_colour(self):
+        
+        originalcolour = self.blockxp.colour
+        self.blockxp.wradReflect([0,0,0], [0,0,1])
+        np.testing.assert_almost_equal(self.blockxp.colour, originalcolour)
+    
+    
+    def test_reflect_cube_x_plane_Y_colour(self):
+        
+        originalcolour = self.blockyp.colour
+        self.blockyp.wradReflect([0,0,0], [1,0,0])
+        np.testing.assert_almost_equal(self.blockyp.colour, originalcolour)
+        
+    def test_reflect_cube_y_plane_Y_colour(self):
+        
+        self.blockyp.wradReflect([0,0,0], [0,1,0])
+        np.testing.assert_almost_equal(self.blockyp.colour, self.blockyn.colour)
+        
+    def test_reflect_cube_z_plane_Y_colour(self):
+        
+        originalcolour = self.blockyp.colour
+        self.blockyp.wradReflect([0,0,0], [0,0,1])
+        np.testing.assert_almost_equal(self.blockyp.colour, originalcolour)
         
     
+    def test_reflect_cube_x_plane_Z_colour(self):
+        
+        originalcolour = self.blockzp.colour
+        self.blockzp.wradReflect([0,0,0], [1,0,0])
+        np.testing.assert_almost_equal(self.blockzp.colour, originalcolour)
+        
+    def test_reflect_cube_y_plane_Z_colour(self):
+        
+        originalcolour = self.blockzp.colour
+        self.blockzp.wradReflect([0,0,0], [0,1,0])
+        np.testing.assert_almost_equal(self.blockzp.colour, originalcolour)
+        
+    def test_reflect_cube_z_plane_Z_colour(self):
+        
+        self.blockzp.wradReflect([0,0,0], [0,0,1])
+        np.testing.assert_almost_equal(self.blockzp.colour, self.blockzn.colour)
+
+class Test_wradFieldInvert_thickpolygon(unittest.TestCase):    
+    #wradRotate. Testing for thick polygons being rotated
+    def setUp(self):
+        
+        rd.UtiDelAll()
+        self.ksi = [.019, .06]
+        self.M = [1,0,0]
+        self.material = wrd.wrad_mat.wradMatLin(self.ksi,self.M)
+        
+        Mxp = [1,0,0]
+        Mxn = [-1,0,0]
+        Myp = [0,1,0]
+        Myn = [0,-1,0]
+        Mzp = [0,0,1]
+        Mzn = [0,0,-1]
+        
+        materialxp = wrd.wrad_mat.wradMatLin(self.ksi,Mxp)
+        materialxn = wrd.wrad_mat.wradMatLin(self.ksi,Mxn)
+        materialyp = wrd.wrad_mat.wradMatLin(self.ksi,Myp)
+        materialyn = wrd.wrad_mat.wradMatLin(self.ksi,Myn)
+        materialzp = wrd.wrad_mat.wradMatLin(self.ksi,Mzp)
+        materialzn = wrd.wrad_mat.wradMatLin(self.ksi,Mzn)
+        
+        self.blockxp = wrd.wrad_obj.wradObjThckPgn(10, 10, [[-5,5],[5,5],[5,-5],[-5,-5]],'x',[0,0,0])
+        self.blockxp.wradMatAppl(materialxp)
+        
+        self.blockxn = wrd.wrad_obj.wradObjThckPgn(10, 10, [[-5,5],[5,5],[5,-5],[-5,-5]],'x',[0,0,0])
+        self.blockxn.wradMatAppl(materialxn)
+        
+        self.blockyp = wrd.wrad_obj.wradObjThckPgn(10, 10, [[-5,5],[5,5],[5,-5],[-5,-5]],'x',[0,0,0])
+        self.blockyp.wradMatAppl(materialyp)
+        
+        self.blockyn = wrd.wrad_obj.wradObjThckPgn(10, 10, [[-5,5],[5,5],[5,-5],[-5,-5]],'x',[0,0,0])
+        self.blockyn.wradMatAppl(materialyn)
+        
+        self.blockzp = wrd.wrad_obj.wradObjThckPgn(10, 10, [[-5,5],[5,5],[5,-5],[-5,-5]],'x',[0,0,0])
+        self.blockzp.wradMatAppl(materialzp)
+        
+        self.blockzn = wrd.wrad_obj.wradObjThckPgn(10, 10, [[-5,5],[5,5],[5,-5],[-5,-5]],'x',[0,0,0])
+        self.blockzn.wradMatAppl(materialzn)
+                
+    def test_field_invert_X_magnetisation(self):
+        
+        self.blockxp.wradFieldInvert()
+        np.testing.assert_almost_equal(self.blockxp.magnetisation, self.blockxn.magnetisation)
+        
+    def test_field_invert_Y_magnetisation(self):
+        
+        self.blockyp.wradFieldInvert()
+        np.testing.assert_almost_equal(self.blockyp.magnetisation, self.blockyn.magnetisation)
+        
+    def test_field_invert_Z_magnetisation(self):
+        
+        self.blockzp.wradFieldInvert()
+        np.testing.assert_almost_equal(self.blockzp.magnetisation, self.blockzn.magnetisation)
+        
+        
+    def test_field_invert_X_colour(self):
+        
+        self.blockxp.wradFieldInvert()
+        np.testing.assert_almost_equal(self.blockxp.colour, self.blockxn.colour)
+        
+    def test_field_invert_Y_colour(self):
+        
+        self.blockyp.wradFieldInvert()
+        np.testing.assert_almost_equal(self.blockyp.colour, self.blockyn.colour)
+        
+    def test_field_invert_Z_colour(self):
+        
+        self.blockzp.wradFieldInvert()
+        np.testing.assert_almost_equal(self.blockzp.colour, self.blockzn.colour)
+        
+        
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.test_wradObjThckPgn_exists']
     unittest.main()
