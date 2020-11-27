@@ -185,7 +185,9 @@ class wradObjThckPgn(object):
         for i in range(len(self.magnetisation)):
             u = -self.magnetisation [i]
             self.magnetisation[i] = u
-            
+        
+        fieldinvert = rd.TrfInv(self.radobj)
+        rd.TrfOrnt(self.radobj,fieldinvert)    
 
         try:
             self.colour
@@ -204,7 +206,7 @@ class wradObjThckPgn(object):
             pass
         
 #        self.radobj.TrfInv()
-        rd.TrfInv(self.radobj)
+        
 #        rd.TrfOrnt(self.radobj,fieldinvert)
             
     def wradFieldRotate(self,pivot_origin, pivot_vector, rot_magnitude):

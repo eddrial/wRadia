@@ -759,7 +759,7 @@ class Test_wradFieldInvert_container(unittest.TestCase):
         #create an array of magnet blocks as comparators
         self.comparator_blocks = [[] for _ in range(6)]
         for i in range(6):
-            self.comparator_blocks[i] = wrd.wrad_obj.wradObjThckPgn(0, 11, [[-5,5],[5,5],[5,-5],[-5,-5]],'x',[0,0,0])
+            self.comparator_blocks[i] = wrd.wrad_obj.wradObjThckPgn(0, 10, [[-5,5],[5,5],[5,-5],[-5,-5]],'x',[0,0,0])
             self.comparator_blocks[i].wradMatAppl(materials[i]) 
         
         #create containers for X, Y Z blocks
@@ -799,6 +799,29 @@ class Test_wradFieldInvert_container(unittest.TestCase):
         
         self.test_containers[2].objectlist[0].wradFieldInvert()
         np.testing.assert_almost_equal(self.test_containers[2].objectlist[0].colour, self.comparator_blocks[5].colour)
+      
+    def test_field_invert_container_X_Bfield(self):
+        self.test_containers[0].wradFieldInvert()
+        self.test_containers[0].objectlist[0].wradSolve(0.001,1000)
+        b = rd.Fld(self.test_containers[0].objectlist[0].radobj,'bxbybz',[6.0,0,0])
+        print(b)
+        self.assertLess(b[0], -0.01, 'field did not invert')
+        
+    def test_field_invert_container_Y_Bfield(self):
+        
+        self.test_containers[1].wradFieldInvert()
+        self.test_containers[1].objectlist[0].wradSolve(0.001,1000)
+        b = rd.Fld(self.test_containers[1].objectlist[0].radobj,'bxbybz',[0.0,6.0,0.0])
+        print(b)
+        self.assertLess(b[1], -0.01, 'field did not invert')
+        
+    def test_field_invert_container_Z_Bfield(self):
+        
+        self.test_containers[2].wradFieldInvert()
+        self.test_containers[2].objectlist[0].wradSolve(0.001,1000)
+        b = rd.Fld(self.test_containers[2].objectlist[0].radobj,'bxbybz',[0,0.0,6.0])
+        print(b)
+        self.assertLess(b[2], -0.01, 'field did not invert')
       
 
 if __name__ == "__main__":
