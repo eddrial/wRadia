@@ -6,6 +6,7 @@ Created on 3 Mar 2020
 
 import radia as rd
 import numpy as np
+import copy
 from scipy.spatial.transform import Rotation as R
 
 class wradObjThckPgn(object):
@@ -48,8 +49,8 @@ class wradObjThckPgn(object):
         self.radobj = rd.ObjThckPgn(self.x, self.lx, self.corners,self.extrusion_direction, self.magnetisation)
         
     def wradMatAppl(self,material):
-        self.material = material
-        self.magnetisation = self.material.M
+        self.material = copy.deepcopy(material)
+        self.magnetisation = copy.deepcopy(self.material.M)
         magcol = [(2 + y) / 4.0 for y in self.material.M]
         rd.MatApl(self.radobj,material.radobj)
         self.wradObjDrwAtr(magcol)
@@ -182,23 +183,29 @@ class wradObjThckPgn(object):
     def wradFieldInvert(self):
         '''trying to write a field inversion function'''
         for i in range(len(self.magnetisation)):
-            self.magnetisation[i] = -self.magnetisation[i]
-            try:
-                self.colour
-                #if yes invert the colour colour
-                tmp = np.zeros(3)
-            #reflect colour
-                tmpcol = [(4*x - 2) for x in self.colour]
-                
-                tmpcol[0] = -tmpcol[0]
-                tmpcol[1] = -tmpcol[1]
-                tmpcol[2] = -tmpcol[2]
-                
-                self.colour = [(2+x) / 4.0 for x in tmpcol]
-                rd.ObjDrwAtr(self.radobj,self.colour, self.linethickness)
-            except:
-                pass
+            u = -self.magnetisation [i]
+            self.magnetisation[i] = u
+            
+
+        try:
+            self.colour
+            #if yes invert the colour colour
+            tmp = np.zeros(3)
+        #reflect colour
+            tmpcol = [(4*x - 2) for x in self.colour]
+            
+            tmpcol[0] = -tmpcol[0]
+            tmpcol[1] = -tmpcol[1]
+            tmpcol[2] = -tmpcol[2]
+            
+            self.colour = [(2+x) / 4.0 for x in tmpcol]
+            rd.ObjDrwAtr(self.radobj,self.colour, self.linethickness)
+        except:
+            pass
+        
+#        self.radobj.TrfInv()
         rd.TrfInv(self.radobj)
+#        rd.TrfOrnt(self.radobj,fieldinvert)
             
     def wradFieldRotate(self,pivot_origin, pivot_vector, rot_magnitude):
         '''trying to write a rotation function

@@ -69,8 +69,8 @@ class Test_wradMatAppl(unittest.TestCase):
         self.a = wrd.wrad_obj.wradObjThckPgn(0, 5, [[0,10],[10,10],[10,0],[0,0]],'x',[1,2,3])
         self.a.wradMatAppl(self.material)
     
-    def test_wradMatAppl_material(self):
-        assert self.a.material == self.material
+    def test_wradMatAppl_material_ksi(self):
+        assert self.a.material.ksi == self.material.ksi
         
     def test_wradMatAppl_magnetisation(self):
         assert self.material.M == self.M
@@ -604,7 +604,203 @@ class Test_wradFieldInvert_thickpolygon(unittest.TestCase):
         self.blockzp.wradFieldInvert()
         np.testing.assert_almost_equal(self.blockzp.colour, self.blockzn.colour)
         
+class Test_wradReflect_container(unittest.TestCase):    
+    #wradRotate. Testing for thick polygons being rotated
+    def setUp(self):
         
+        #Test suite to see if reflecting a container of two thick polygons correctly reflects magnetisation vector, colour, and calls the correct Radia function
+        # Need 4 blocks 
+        
+        rd.UtiDelAll()
+        self.ksi = [.019, .06]
+        
+        #defince an array of magnetisatins [x+, x-, y+, y-, z+, z-]
+        self.magnetisations = [[1,0,0],[-1,0,0],[0,1,0],[0,-1,0],[0,0,1],[0,0,-1]]
+        
+        #define array of materials to apply to the blocks
+        self.materials = [[] for _ in range(6)]
+        for i in range(6):
+            self.materials[i] = wrd.wrad_mat.wradMatLin(self.ksi, self.magnetisations[i])
+        #create an array of magnet blocks for manipulation
+        self.test_blocks = [[] for _ in range(6)]
+        for i in range(6):
+            self.test_blocks[i] = wrd.wrad_obj.wradObjThckPgn(0, 10, [[-5,5],[5,5],[5,-5],[-5,-5]],'x',[0,0,0])
+            self.test_blocks[i].wradMatAppl(self.materials[i]) 
+        
+        #create an array of magnet blocks as comparators
+        self.comparator_blocks = [[] for _ in range(6)]
+        for i in range(6):
+            self.comparator_blocks[i] = wrd.wrad_obj.wradObjThckPgn(0, 10, [[-5,5],[5,5],[5,-5],[-5,-5]],'x',[0,0,0])
+            self.comparator_blocks[i].wradMatAppl(self.materials[i]) 
+        
+        #create containers for X, Y Z blocks
+        self.test_containers = [[] for _ in range(3)]
+        for i in range(3):
+            self.test_containers[i] = wrd.wrad_obj.wradObjCnt([self.test_blocks[2*i],self.test_blocks[2*i + 1]])
+        
+        
+    def test_reflect_container_x_plane_X_magnetisation(self):
+        
+        self.test_containers[0].wradReflect([0,0,0], [1,0,0])
+        np.testing.assert_almost_equal(self.test_containers[0].objectlist[0].magnetisation, np.array(self.comparator_blocks[1].magnetisation))
+        
+    def test_reflect_container_y_plane_X_magnetisation(self):
+        
+        self.test_containers[0].wradReflect([0,0,0], [0,1,0])
+        np.testing.assert_almost_equal(self.test_containers[0].objectlist[0].magnetisation, self.comparator_blocks[0].magnetisation)
+        
+    def test_reflect_container_z_plane_X_magnetisation(self):
+        
+        self.test_containers[0].wradReflect([0,0,0], [0,0,1])
+        np.testing.assert_almost_equal(self.test_containers[0].objectlist[0].magnetisation, self.comparator_blocks[0].magnetisation)
+    
+    
+    def test_reflect_container_x_plane_Y_magnetisation(self):
+        
+        self.test_containers[1].wradReflect([0,0,0], [1,0,0])
+        np.testing.assert_almost_equal(self.test_containers[1].objectlist[0].magnetisation, self.comparator_blocks[2].magnetisation)
+        
+    def test_reflect_container_y_plane_Y_magnetisation(self):
+        
+        self.test_containers[1].wradReflect([0,0,0], [0,1,0])
+        np.testing.assert_almost_equal(self.test_containers[1].objectlist[0].magnetisation, self.comparator_blocks[3].magnetisation)
+        
+    def test_reflect_container_z_plane_Y_magnetisation(self):
+        
+        self.test_containers[1].wradReflect([0,0,0], [0,0,1])
+        np.testing.assert_almost_equal(self.test_containers[1].objectlist[0].magnetisation, self.comparator_blocks[2].magnetisation)
+        
+    
+    def test_reflect_container_x_plane_Z_magnetisation(self):
+        
+        self.test_containers[2].wradReflect([0,0,0], [1,0,0])
+        np.testing.assert_almost_equal(self.test_containers[2].objectlist[0].magnetisation, self.comparator_blocks[4].magnetisation)
+        
+    def test_reflect_container_y_plane_Z_magnetisation(self):
+        
+        self.test_containers[2].wradReflect([0,0,0], [0,1,0])
+        np.testing.assert_almost_equal(self.test_containers[2].objectlist[0].magnetisation, self.comparator_blocks[4].magnetisation)
+        
+    def test_reflect_container_z_plane_Z_magnetisation(self):
+        
+        self.test_containers[2].wradReflect([0,0,0], [0,0,1])
+        np.testing.assert_almost_equal(self.test_containers[2].objectlist[0].magnetisation, self.comparator_blocks[5].magnetisation)
+        
+    def test_reflect_container_x_plane_X_colour(self):
+        
+        self.test_containers[0].wradReflect([0,0,0], [1,0,0])
+        np.testing.assert_almost_equal(self.test_containers[0].objectlist[0].colour, self.comparator_blocks[1].colour)
+        
+    def test_reflect_container_y_plane_X_colour(self):
+        
+        self.test_containers[0].wradReflect([0,0,0], [0,1,0])
+        np.testing.assert_almost_equal(self.test_containers[0].objectlist[0].colour, self.comparator_blocks[0].colour)
+        
+    def test_reflect_container_z_plane_X_colour(self):
+        
+        self.test_containers[0].wradReflect([0,0,0], [0,0,1])
+        np.testing.assert_almost_equal(self.test_containers[0].objectlist[0].colour, self.comparator_blocks[0].colour)
+    
+    
+    def test_reflect_container_x_plane_Y_colour(self):
+        
+        self.test_containers[1].wradReflect([0,0,0], [1,0,0])
+        np.testing.assert_almost_equal(self.test_containers[1].objectlist[0].colour, self.comparator_blocks[2].colour)
+        
+    def test_reflect_container_y_plane_Y_colour(self):
+        
+        self.test_containers[1].wradReflect([0,0,0], [0,1,0])
+        np.testing.assert_almost_equal(self.test_containers[1].objectlist[0].colour, self.comparator_blocks[3].colour)
+        
+    def test_reflect_container_z_plane_Y_colour(self):
+        
+        self.test_containers[1].wradReflect([0,0,0], [0,0,1])
+        np.testing.assert_almost_equal(self.test_containers[1].objectlist[0].colour, self.comparator_blocks[2].colour)
+        
+    
+    def test_reflect_container_x_plane_Z_colour(self):
+        
+        self.test_containers[2].wradReflect([0,0,0], [1,0,0])
+        np.testing.assert_almost_equal(self.test_containers[2].objectlist[0].colour, self.comparator_blocks[4].colour)
+        
+    def test_reflect_container_y_plane_Z_colour(self):
+        
+        self.test_containers[2].wradReflect([0,0,0], [0,1,0])
+        np.testing.assert_almost_equal(self.test_containers[2].objectlist[0].colour, self.comparator_blocks[4].colour)
+        
+    def test_reflect_container_z_plane_Z_colour(self):
+        
+        self.test_containers[2].wradReflect([0,0,0], [0,0,1])
+        np.testing.assert_almost_equal(self.test_containers[2].objectlist[0].colour, self.comparator_blocks[5].colour)
+
+class Test_wradFieldInvert_container(unittest.TestCase):    
+    #wradRotate. Testing for thick polygons being rotated
+    def setUp(self):
+        
+        #Test suite to see if reflecting a container of two thick polygons correctly reflects magnetisation vector, colour, and calls the correct Radia function
+        # Need 4 blocks 
+        
+        rd.UtiDelAll()
+        self.ksi = [.019, .06]
+        
+        #defince an array of magnetisatins [x+, x-, y+, y-, z+, z-]
+        magnetisations = [[1,0,0],[-1,0,0],[0,1,0],[0,-1,0],[0,0,1],[0,0,-1]]
+        
+        #define array of materials to apply to the blocks
+        materials = [[] for _ in range(6)]
+        for i in range(6):
+            materials[i] = wrd.wrad_mat.wradMatLin(self.ksi, magnetisations[i])
+        #create an array of magnet blocks for manipulation
+        self.test_blocks = [[] for _ in range(6)]
+        for i in range(6):
+            self.test_blocks[i] = wrd.wrad_obj.wradObjThckPgn(0, 10, [[-5,5],[5,5],[5,-5],[-5,-5]],'x',[0,0,0])
+            self.test_blocks[i].wradMatAppl(materials[i]) 
+        
+        #create an array of magnet blocks as comparators
+        self.comparator_blocks = [[] for _ in range(6)]
+        for i in range(6):
+            self.comparator_blocks[i] = wrd.wrad_obj.wradObjThckPgn(0, 11, [[-5,5],[5,5],[5,-5],[-5,-5]],'x',[0,0,0])
+            self.comparator_blocks[i].wradMatAppl(materials[i]) 
+        
+        #create containers for X, Y Z blocks
+        self.test_containers = [[] for _ in range(3)]
+        for i in range(3):
+            self.test_containers[i] = wrd.wrad_obj.wradObjCnt([self.test_blocks[2*i],self.test_blocks[2*i + 1]])
+            #self.test_containers[i] = wrd.wrad_obj.wradObjCnt([self.test_blocks[2*i]])
+        
+        
+        
+            
+    def test_field_invert_container_X_magnetisation(self):
+        self.test_containers[0].wradFieldInvert()
+        np.testing.assert_almost_equal(self.test_containers[0].objectlist[0].magnetisation, self.comparator_blocks[1].magnetisation)
+        
+    def test_field_invert_container_Y_magnetisation(self):
+        
+        self.test_containers[1].wradFieldInvert()
+        np.testing.assert_almost_equal(self.test_containers[1].objectlist[0].magnetisation, self.comparator_blocks[3].magnetisation)
+        
+    def test_field_invert_container_Z_magnetisation(self):
+        
+        self.test_containers[2].objectlist[0].wradFieldInvert()
+        np.testing.assert_almost_equal(self.test_containers[2].objectlist[0].magnetisation, self.comparator_blocks[5].magnetisation)
+        
+        
+    def test_field_invert_container_X_colour(self):
+        self.test_containers[0].wradFieldInvert()
+        np.testing.assert_almost_equal(self.test_containers[0].objectlist[0].colour, self.comparator_blocks[1].colour)
+        
+    def test_field_invert_container_Y_colour(self):
+        
+        self.test_containers[1].wradFieldInvert()
+        np.testing.assert_almost_equal(self.test_containers[1].objectlist[0].colour, self.comparator_blocks[3].colour)
+        
+    def test_field_invert_container_Z_colour(self):
+        
+        self.test_containers[2].objectlist[0].wradFieldInvert()
+        np.testing.assert_almost_equal(self.test_containers[2].objectlist[0].colour, self.comparator_blocks[5].colour)
+      
+
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.test_wradObjThckPgn_exists']
     unittest.main()
