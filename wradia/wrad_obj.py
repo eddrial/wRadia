@@ -51,12 +51,22 @@ class wradObjThckPgn(object):
     def wradMatAppl(self,material):
         self.material = copy.deepcopy(material)
         self.magnetisation = copy.deepcopy(self.material.M)
-        magcol = [(2 + y) / 4.0 for y in self.material.M]
         rd.MatApl(self.radobj,material.radobj)
-        self.wradObjDrwAtr(magcol)
+        
+        #Apply Colour
+#        magcol = [(2 + y) / 4.0 for y in self.material.M]
+#        self.wradObjDrwAtr(magcol)
         
     #Graphics Methods
-    def wradObjDrwAtr(self, colour, linethickness = 2):
+    def wradObjDrwAtr(self, colour = 'default', linethickness = 2):
+        
+        if colour == 'default':
+            self.set_default_colour = True
+            colour = [(2 + y) / 4.0 for y in self.material.M]
+        else: 
+            self.set_default_colour = False
+        
+        
         self.colour = colour
         self.linethickness = linethickness
         
@@ -450,11 +460,26 @@ class wradObjCnt(object):
         
         
 #Graphics Methods
-    def wradObjDrwAtr(self, colour, linethickness = 2):
-        self.colour = colour
-        self.linethickness = linethickness
+    def wradObjDrwAtr(self, colour = 'default', linethickness = 2):
         
-        rd.ObjDrwAtr(self.radobj,self.colour, self.linethickness)
+        try:
+            self.objectlist
+        except AttributeError:
+            pass
+        
+        for obj in self.objectlist:
+            obj.wradObjDrwAtr(colour = 'default', linethickness = 2)
+        
+#        if colour == 'default':
+#            self.set_default_colour = True
+#            colour = [(2 + y) / 4.0 for y in self.material.M]
+#        else: 
+#            self.set_default_colour = False
+        
+#        self.colour = colour
+#        self.linethickness = linethickness
+#        
+#        rd.ObjDrwAtr(self.radobj,self.colour, self.linethickness)
         
         
 #solving methods

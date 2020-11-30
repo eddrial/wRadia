@@ -184,6 +184,7 @@ class Test_wradRotate_thickpolygon(unittest.TestCase):
         
         self.a = wrd.wrad_obj.wradObjThckPgn(0, 10, [[-5,5],[5,5],[5,-5],[-5,-5]],'x',[0,0,0])
         self.a.wradMatAppl(self.material)
+        self.a.wradObjDrwAtr(colour = 'default', linethickness = 2)
         
         #self.a.wradRotate([0,0,0], [1,0,0], np.pi)
         
@@ -258,6 +259,7 @@ class Test_wradRotate_thickpolygon(unittest.TestCase):
         
         b = wrd.wrad_obj.wradObjThckPgn(0, 10, [[-5,5],[5,5],[5,-5],[-5,-5]],'x',[0,0,0])
         b.wradMatAppl(loc_material)
+        b.wradObjDrwAtr(colour = 'default', linethickness = 2)
         
         np.testing.assert_almost_equal(self.a.colour, b.colour, 2, 'The Colour is Wrong') 
         
@@ -410,21 +412,27 @@ class Test_wradReflect_thickpolygon(unittest.TestCase):
         
         self.blockxp = wrd.wrad_obj.wradObjThckPgn(10, 10, [[-5,5],[5,5],[5,-5],[-5,-5]],'x',[0,0,0])
         self.blockxp.wradMatAppl(materialxp)
+        self.blockxp.wradObjDrwAtr(colour = 'default', linethickness = 2)
         
         self.blockxn = wrd.wrad_obj.wradObjThckPgn(10, 10, [[-5,5],[5,5],[5,-5],[-5,-5]],'x',[0,0,0])
         self.blockxn.wradMatAppl(materialxn)
+        self.blockxn.wradObjDrwAtr(colour = 'default', linethickness = 2)
         
         self.blockyp = wrd.wrad_obj.wradObjThckPgn(10, 10, [[-5,5],[5,5],[5,-5],[-5,-5]],'x',[0,0,0])
         self.blockyp.wradMatAppl(materialyp)
+        self.blockyp.wradObjDrwAtr(colour = 'default', linethickness = 2)
         
         self.blockyn = wrd.wrad_obj.wradObjThckPgn(10, 10, [[-5,5],[5,5],[5,-5],[-5,-5]],'x',[0,0,0])
         self.blockyn.wradMatAppl(materialyn)
+        self.blockyn.wradObjDrwAtr(colour = 'default', linethickness = 2)
         
         self.blockzp = wrd.wrad_obj.wradObjThckPgn(10, 10, [[-5,5],[5,5],[5,-5],[-5,-5]],'x',[0,0,0])
         self.blockzp.wradMatAppl(materialzp)
+        self.blockzp.wradObjDrwAtr(colour = 'default', linethickness = 2)
         
         self.blockzn = wrd.wrad_obj.wradObjThckPgn(10, 10, [[-5,5],[5,5],[5,-5],[-5,-5]],'x',[0,0,0])
         self.blockzn.wradMatAppl(materialzn)
+        self.blockzn.wradObjDrwAtr(colour = 'default', linethickness = 2)
         
     def test_reflect_cube_x_plane_X_magnetisation(self):
         
@@ -557,21 +565,27 @@ class Test_wradFieldInvert_thickpolygon(unittest.TestCase):
         
         self.blockxp = wrd.wrad_obj.wradObjThckPgn(10, 10, [[-5,5],[5,5],[5,-5],[-5,-5]],'x',[0,0,0])
         self.blockxp.wradMatAppl(materialxp)
+        self.blockxp.wradObjDrwAtr(colour = 'default', linethickness = 2)
         
         self.blockxn = wrd.wrad_obj.wradObjThckPgn(10, 10, [[-5,5],[5,5],[5,-5],[-5,-5]],'x',[0,0,0])
         self.blockxn.wradMatAppl(materialxn)
+        self.blockxn.wradObjDrwAtr(colour = 'default', linethickness = 2)
         
         self.blockyp = wrd.wrad_obj.wradObjThckPgn(10, 10, [[-5,5],[5,5],[5,-5],[-5,-5]],'x',[0,0,0])
         self.blockyp.wradMatAppl(materialyp)
+        self.blockyp.wradObjDrwAtr(colour = 'default', linethickness = 2)
         
         self.blockyn = wrd.wrad_obj.wradObjThckPgn(10, 10, [[-5,5],[5,5],[5,-5],[-5,-5]],'x',[0,0,0])
         self.blockyn.wradMatAppl(materialyn)
+        self.blockyn.wradObjDrwAtr(colour = 'default', linethickness = 2)
         
         self.blockzp = wrd.wrad_obj.wradObjThckPgn(10, 10, [[-5,5],[5,5],[5,-5],[-5,-5]],'x',[0,0,0])
         self.blockzp.wradMatAppl(materialzp)
+        self.blockzp.wradObjDrwAtr(colour = 'default', linethickness = 2)
         
         self.blockzn = wrd.wrad_obj.wradObjThckPgn(10, 10, [[-5,5],[5,5],[5,-5],[-5,-5]],'x',[0,0,0])
         self.blockzn.wradMatAppl(materialzn)
+        self.blockzn.wradObjDrwAtr(colour = 'default', linethickness = 2)
                 
     def test_field_invert_X_magnetisation(self):
         
@@ -625,13 +639,15 @@ class Test_wradReflect_container(unittest.TestCase):
         self.test_blocks = [[] for _ in range(6)]
         for i in range(6):
             self.test_blocks[i] = wrd.wrad_obj.wradObjThckPgn(0, 10, [[-5,5],[5,5],[5,-5],[-5,-5]],'x',[0,0,0])
-            self.test_blocks[i].wradMatAppl(self.materials[i]) 
+            self.test_blocks[i].wradMatAppl(self.materials[i])
+            self.test_blocks[i].wradObjDrwAtr(colour = 'default', linethickness = 2) 
         
         #create an array of magnet blocks as comparators
         self.comparator_blocks = [[] for _ in range(6)]
         for i in range(6):
             self.comparator_blocks[i] = wrd.wrad_obj.wradObjThckPgn(0, 10, [[-5,5],[5,5],[5,-5],[-5,-5]],'x',[0,0,0])
-            self.comparator_blocks[i].wradMatAppl(self.materials[i]) 
+            self.comparator_blocks[i].wradMatAppl(self.materials[i])
+            self.comparator_blocks[i].wradObjDrwAtr(colour = 'default', linethickness = 2)
         
         #create containers for X, Y Z blocks
         self.test_containers = [[] for _ in range(3)]
@@ -755,12 +771,14 @@ class Test_wradFieldInvert_container(unittest.TestCase):
         for i in range(6):
             self.test_blocks[i] = wrd.wrad_obj.wradObjThckPgn(0, 10, [[-5,5],[5,5],[5,-5],[-5,-5]],'x',[0,0,0])
             self.test_blocks[i].wradMatAppl(materials[i]) 
+            self.test_blocks[i].wradObjDrwAtr(colour = 'default', linethickness = 2)
         
         #create an array of magnet blocks as comparators
         self.comparator_blocks = [[] for _ in range(6)]
         for i in range(6):
             self.comparator_blocks[i] = wrd.wrad_obj.wradObjThckPgn(0, 10, [[-5,5],[5,5],[5,-5],[-5,-5]],'x',[0,0,0])
             self.comparator_blocks[i].wradMatAppl(materials[i]) 
+            self.comparator_blocks[i].wradObjDrwAtr(colour = 'default', linethickness = 2)
         
         #create containers for X, Y Z blocks
         self.test_containers = [[] for _ in range(3)]
