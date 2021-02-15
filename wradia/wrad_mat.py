@@ -22,6 +22,9 @@ class wradMatLin(object):
         
         
         '''
+        
+        #if type(self.material.M) 
+        
         self.ksi = ksi
         self.M = M
         
