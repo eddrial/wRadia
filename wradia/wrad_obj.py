@@ -190,7 +190,7 @@ class wradObjThckPgn(object):
         for i in range (len(self.vertices)):
             self.vertices[i] = self.vertices[i] + translation_vector
         
-        #rotate radia object
+        #translate radia object
         tran = rd.TrfTrsl(translation_vector)
         rd.TrfOrnt(self.radobj,tran)
         
@@ -499,6 +499,7 @@ class wradObjCnt(object):
         self.solved = 1
         
 #streamplotting
+#This is not a good place for this function
     def wradStreamPlot(self,corner1 = np.array([-10,0,-10]), corner2 = np.array([10,0,10]), fields = 'bxbz'):
         
         #region of V magnets
@@ -518,12 +519,22 @@ class wradObjCnt(object):
         #  Varying density along a streamline
         ax0 = fig.add_subplot(gs[0, 0])
         ax0.streamplot(Xv, Zv, Bxv, Bzv, density=[0.5, 1])
+        for i in range(2):
+            for j in range(4,7,2):
+                ax0.plot(self.objectlist[j].objectlist[0].objectlist[0].objectlist[i].vertices[:,0],
+                         self.objectlist[j].objectlist[0].objectlist[0].objectlist[i].vertices[:,2], color = 'k')
         ax0.set_title('Vertical Comp Magnets')
+        
+        ax0.set_aspect('equal')
         
         # Varying color along a streamline
         ax1 = fig.add_subplot(gs[0, 1])
         strm = ax1.streamplot(Xv, Zv, Bxv, Bzv, color=Bzv, linewidth=2, cmap='autumn')
         fig.colorbar(strm.lines)
+        for i in range(2):
+            for j in range(4,7,2):
+                ax1.plot(self.objectlist[j].objectlist[0].objectlist[0].objectlist[i].vertices[:,0],
+                         self.objectlist[j].objectlist[0].objectlist[0].objectlist[i].vertices[:,2], color = 'k')
         ax1.set_title('Vertical Comp Magnets')
         
         #region of H magnets
@@ -536,21 +547,32 @@ class wradObjCnt(object):
                 #print ('coords are {}'.format([X[i,j],Y[i,j]]))
                 BXh[i,j],BZh[i,j] = rd.Fld(self.radobj,'bxbz',[Xh[i,j],0,Zh[i,j]]) 
                 #print ('the field at those coords are Bx: {} Bz: {}'.format(a,b))
-        
+        ax1.set_aspect('equal')
         
         #  Varying density along a streamline
         ax2 = fig.add_subplot(gs[1, 0])
         ax2.streamplot(Xh, Zh, BXh, BZh, density=[0.5, 1])
         ax2.set_title('Horizontal Comp Magnets')
         
+        for i in range(2):
+            for j in range(7,12,4):
+                ax2.plot(self.objectlist[j].objectlist[0].objectlist[0].objectlist[i].vertices[:,0],
+                         self.objectlist[j].objectlist[0].objectlist[0].objectlist[i].vertices[:,2], color = 'k')
+        ax2.set_aspect('equal')
+        
         # Varying color along a streamline
         ax3 = fig.add_subplot(gs[1, 1])
         strm = ax3.streamplot(Xh, Zh, BXh, BZh, color=BZh, linewidth=2, cmap='autumn')
         fig.colorbar(strm.lines)
+        for i in range(2):
+            for j in range(7,12,4):
+                ax3.plot(self.objectlist[j].objectlist[0].objectlist[0].objectlist[i].vertices[:,0],
+                         self.objectlist[j].objectlist[0].objectlist[0].objectlist[i].vertices[:,2], color = 'k')
         ax3.set_title('Horizontal Comp Magnets')
-    
+        ax3.set_aspect('equal')
+        
         #region of Functional magnets
-        Zf, Xf = np.mgrid[-10:10:41j, -10:10:41j]
+        Zf, Xf = np.mgrid[-20:20:41j, -20:20:41j]
         BXf = Xf.copy()
         BZf = Zf.copy()
         
@@ -565,12 +587,22 @@ class wradObjCnt(object):
         ax4 = fig.add_subplot(gs[2, 0])
         ax4.streamplot(Xf, Zf, BXf, BZf, density=[0.5, 1])
         ax4.set_title('Functional Magnets')
+        for i in range(3):
+            for j in range(4):
+                ax4.plot(self.objectlist[j].objectlist[0].objectlist[0].objectlist[i].vertices[:,0],
+                         self.objectlist[j].objectlist[0].objectlist[0].objectlist[i].vertices[:,2], color = 'k')
+        ax4.set_aspect('equal')
         
         # Varying color along a streamline
         ax5 = fig.add_subplot(gs[2, 1])
         strm = ax5.streamplot(Xf, Zf, BXf, BZf, color=BZf, linewidth=2, cmap='autumn')
         fig.colorbar(strm.lines)
         ax5.set_title('Functional Magnets')
+        for i in range(3):
+            for j in range(4):
+                ax5.plot(self.objectlist[j].objectlist[0].objectlist[0].objectlist[i].vertices[:,0],
+                         self.objectlist[j].objectlist[0].objectlist[0].objectlist[i].vertices[:,2], color = 'k')
+        ax5.set_aspect('equal')
         
         
 if __name__ == '__main__':
