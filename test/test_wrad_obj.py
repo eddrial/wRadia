@@ -663,8 +663,13 @@ class Test_wradContainerBasics(unittest.TestCase):
         
         np.testing.assert_equal(self.emptycontainer.objectlist, [self.basicblock])
         
+    def test_subdivision(self):
+        self.emptycontainer.wradObjDivMag([2,2,2])
         
+        np.testing.assert_equal(self.emptycontainer.subdivision,[2,2,2])
         
+    def test_default_subdivision(self):
+        np.testing.assert_equal(hasattr(self.emptycontainer,'subdivision'),False)
     
         
         
