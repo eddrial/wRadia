@@ -671,7 +671,44 @@ class Test_wradContainerBasics(unittest.TestCase):
     def test_default_subdivision(self):
         np.testing.assert_equal(hasattr(self.emptycontainer,'subdivision'),False)
     
+class Test_wradRotate_container(unittest.TestCase):
+    def setUp(self):
         
+        #Test suite to see if reflecting a container of two thick polygons correctly reflects magnetisation vector, colour, and calls the correct Radia function
+        # Need 4 blocks 
+        
+        rd.UtiDelAll()
+        self.ksi = [.019, .06]
+        
+        #defince an array of magnetisatins [x+, x-, y+, y-, z+, z-]
+        self.magnetisations = [[1,0,0],[-1,0,0],[0,1,0],[0,-1,0],[0,0,1],[0,0,-1]]
+        
+        #define array of materials to apply to the blocks
+        self.materials = [[] for _ in range(6)]
+        for i in range(6):
+            self.materials[i] = wrd.wrad_mat.wradMatLin(self.ksi, self.magnetisations[i])
+        #create an array of magnet blocks for manipulation
+        self.test_blocks = [[] for _ in range(6)]
+        for i in range(6):
+            self.test_blocks[i] = wrd.wrad_obj.wradObjThckPgn(0, 10, [[-5,5],[5,5],[5,-5],[-5,-5]],'x',[0,0,0])
+            self.test_blocks[i].wradMatAppl(self.materials[i])
+            self.test_blocks[i].wradObjDrwAtr(colour = 'default', linethickness = 2) 
+        
+        #create an array of magnet blocks as comparators
+        self.comparator_blocks = [[] for _ in range(6)]
+        for i in range(6):
+            self.comparator_blocks[i] = wrd.wrad_obj.wradObjThckPgn(0, 10, [[-5,5],[5,5],[5,-5],[-5,-5]],'x',[0,0,0])
+            self.comparator_blocks[i].wradMatAppl(self.materials[i])
+            self.comparator_blocks[i].wradObjDrwAtr(colour = 'default', linethickness = 2)
+        
+        #create containers for X, Y Z blocks
+        self.test_containers = [[] for _ in range(3)]
+        for i in range(3):
+            self.test_containers[i] = wrd.wrad_obj.wradObjCnt([self.test_blocks[2*i],self.test_blocks[2*i + 1]])
+        
+        
+    def test_is_colour_here(self):
+        np.testing.assert_equal(hasattr(self.test_containers[0],'colour'),False)
         
 class Test_wradReflect_container(unittest.TestCase):    
     #wradRotate. Testing for thick polygons being rotated
