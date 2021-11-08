@@ -541,6 +541,31 @@ class Test_wradReflect_thickpolygon(unittest.TestCase):
         self.blockzp.wradReflect([0,0,0], [0,0,1])
         np.testing.assert_almost_equal(self.blockzp.colour, self.blockzn.colour)
 
+class Test_wradTranslate_thickpolygon(unittest.TestCase):
+    #wradTranslate. Testing for vertices being correctly translated
+    def setUp(self):
+        rd.UtiDelAll()
+        
+        self.test_blockx = wrd.wrad_obj.wradObjThckPgn(0, 10, [[-5,5],[5,5],[5,-5],[-5,-5]],'x',[1,0,0])
+        self.test_blocky = wrd.wrad_obj.wradObjThckPgn(0, 10, [[-5,5],[5,5],[5,-5],[-5,-5]],'y',[1,0,0])
+        self.test_blockz = wrd.wrad_obj.wradObjThckPgn(0, 10, [[-5,5],[5,5],[5,-5],[-5,-5]],'z',[1,0,0])
+        
+        
+    def test_vertex_motion_correct_x(self):
+        testagainst = copy.deepcopy(self.test_blockx.vertices[:,0])
+        self.test_blockx.wradTranslate([1,0,0])
+        np.testing.assert_equal(self.test_blockx.vertices[:,0],1+testagainst)
+        
+    def test_vertex_motion_correct_y(self):
+        testagainst = copy.deepcopy(self.test_blocky.vertices[:,0])
+        self.test_blocky.wradTranslate([1,0,0])
+        np.testing.assert_equal(self.test_blocky.vertices[:,0],1+testagainst)
+        
+    def test_vertex_motion_correct_z(self):
+        testagainst = copy.deepcopy(self.test_blockz.vertices[:,0])
+        self.test_blockz.wradTranslate([1,0,0])
+        np.testing.assert_equal(self.test_blockz.vertices[:,0],1+testagainst)
+
 class Test_wradFieldInvert_thickpolygon(unittest.TestCase):    
     #wradRotate. Testing for thick polygons being rotated
     def setUp(self):
@@ -618,6 +643,15 @@ class Test_wradFieldInvert_thickpolygon(unittest.TestCase):
         
         self.blockzp.wradFieldInvert()
         np.testing.assert_almost_equal(self.blockzp.colour, self.blockzn.colour)
+        
+class Test_wradContainerBasics(unittest.TestCase):
+    
+    def setUp(self):
+        self.emptycontainer = wrd.wrad_obj.wradObjCnt([])
+    
+    def test_empty_container(self):
+        np.testing.assert_equal(hasattr(self.emptycontainer, 'objectlist'),True)
+        
         
 class Test_wradReflect_container(unittest.TestCase):    
     #wradRotate. Testing for thick polygons being rotated
@@ -753,27 +787,41 @@ class Test_wradReflect_container(unittest.TestCase):
 class Test_wradTranslate_container(unittest.TestCase):
     #wradTranslate. Testing for vertices being correctly translated
     def setUp(self):
+        
+        #Test suite to see if reflecting a container of two thick polygons correctly reflects magnetisation vector, colour, and calls the correct Radia function
+        # Need 4 blocks 
+        
         rd.UtiDelAll()
+        self.ksi = [.019, .06]
         
-        self.test_blockx = wrd.wrad_obj.wradObjThckPgn(0, 10, [[-5,5],[5,5],[5,-5],[-5,-5]],'x',[1,0,0])
-        self.test_blocky = wrd.wrad_obj.wradObjThckPgn(0, 10, [[-5,5],[5,5],[5,-5],[-5,-5]],'y',[1,0,0])
-        self.test_blockz = wrd.wrad_obj.wradObjThckPgn(0, 10, [[-5,5],[5,5],[5,-5],[-5,-5]],'z',[1,0,0])
+        #defince an array of magnetisatins [x+, x-, y+, y-, z+, z-]
+        self.magnetisations = [[1,0,0],[-1,0,0],[0,1,0],[0,-1,0],[0,0,1],[0,0,-1]]
+        
+        #define array of materials to apply to the blocks
+        self.materials = [[] for _ in range(6)]
+        for i in range(6):
+            self.materials[i] = wrd.wrad_mat.wradMatLin(self.ksi, self.magnetisations[i])
+        #create an array of magnet blocks for manipulation
+        self.test_blocks = [[] for _ in range(6)]
+        for i in range(6):
+            self.test_blocks[i] = wrd.wrad_obj.wradObjThckPgn(0, 10, [[-5,5],[5,5],[5,-5],[-5,-5]],'x',[0,0,0])
+            self.test_blocks[i].wradMatAppl(self.materials[i])
+            self.test_blocks[i].wradObjDrwAtr(colour = 'default', linethickness = 2) 
+        
+        #create an array of magnet blocks as comparators
+        self.comparator_blocks = [[] for _ in range(6)]
+        for i in range(6):
+            self.comparator_blocks[i] = wrd.wrad_obj.wradObjThckPgn(0, 10, [[-5,5],[5,5],[5,-5],[-5,-5]],'x',[0,0,0])
+            self.comparator_blocks[i].wradMatAppl(self.materials[i])
+            self.comparator_blocks[i].wradObjDrwAtr(colour = 'default', linethickness = 2)
+        
+        #create containers for X, Y Z blocks
+        self.test_containers = [[] for _ in range(3)]
+        for i in range(3):
+            self.test_containers[i] = wrd.wrad_obj.wradObjCnt([self.test_blocks[2*i],self.test_blocks[2*i + 1]])
         
         
-    def test_vertex_motion_correct_x(self):
-        testagainst = copy.deepcopy(self.test_blockx.vertices[:,0])
-        self.test_blockx.wradTranslate([1,0,0])
-        np.testing.assert_equal(self.test_blockx.vertices[:,0],1+testagainst)
-        
-    def test_vertex_motion_correct_y(self):
-        testagainst = copy.deepcopy(self.test_blocky.vertices[:,0])
-        self.test_blocky.wradTranslate([1,0,0])
-        np.testing.assert_equal(self.test_blocky.vertices[:,0],1+testagainst)
-        
-    def test_vertex_motion_correct_z(self):
-        testagainst = copy.deepcopy(self.test_blockz.vertices[:,0])
-        self.test_blockz.wradTranslate([1,0,0])
-        np.testing.assert_equal(self.test_blockz.vertices[:,0],1+testagainst)
+
 
 class Test_wradFieldInvert_container(unittest.TestCase):    
     #wradRotate. Testing for thick polygons being rotated
@@ -867,6 +915,8 @@ class Test_wradFieldInvert_container(unittest.TestCase):
         print(b)
         self.assertLess(b[2], -0.01, 'field did not invert')
       
+      
+
 
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.test_wradObjThckPgn_exists']
