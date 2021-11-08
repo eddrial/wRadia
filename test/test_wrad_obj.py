@@ -7,6 +7,7 @@ import unittest
 import radia as rd
 import wradia as wrd
 import numpy as np
+import copy
 from _pytest.outcomes import fail
 
 
@@ -748,6 +749,31 @@ class Test_wradReflect_container(unittest.TestCase):
         
         self.test_containers[2].wradReflect([0,0,0], [0,0,1])
         np.testing.assert_almost_equal(self.test_containers[2].objectlist[0].colour, self.comparator_blocks[5].colour)
+
+class Test_wradTranslate_container(unittest.TestCase):
+    #wradTranslate. Testing for vertices being correctly translated
+    def setUp(self):
+        rd.UtiDelAll()
+        
+        self.test_blockx = wrd.wrad_obj.wradObjThckPgn(0, 10, [[-5,5],[5,5],[5,-5],[-5,-5]],'x',[1,0,0])
+        self.test_blocky = wrd.wrad_obj.wradObjThckPgn(0, 10, [[-5,5],[5,5],[5,-5],[-5,-5]],'y',[1,0,0])
+        self.test_blockz = wrd.wrad_obj.wradObjThckPgn(0, 10, [[-5,5],[5,5],[5,-5],[-5,-5]],'z',[1,0,0])
+        
+        
+    def test_vertex_motion_correct_x(self):
+        testagainst = copy.deepcopy(self.test_blockx.vertices[:,0])
+        self.test_blockx.wradTranslate([1,0,0])
+        np.testing.assert_equal(self.test_blockx.vertices[:,0],1+testagainst)
+        
+    def test_vertex_motion_correct_y(self):
+        testagainst = copy.deepcopy(self.test_blocky.vertices[:,0])
+        self.test_blocky.wradTranslate([1,0,0])
+        np.testing.assert_equal(self.test_blocky.vertices[:,0],1+testagainst)
+        
+    def test_vertex_motion_correct_z(self):
+        testagainst = copy.deepcopy(self.test_blockz.vertices[:,0])
+        self.test_blockz.wradTranslate([1,0,0])
+        np.testing.assert_equal(self.test_blockz.vertices[:,0],1+testagainst)
 
 class Test_wradFieldInvert_container(unittest.TestCase):    
     #wradRotate. Testing for thick polygons being rotated
