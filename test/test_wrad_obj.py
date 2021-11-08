@@ -647,10 +647,25 @@ class Test_wradFieldInvert_thickpolygon(unittest.TestCase):
 class Test_wradContainerBasics(unittest.TestCase):
     
     def setUp(self):
+        rd.UtiDelAll()
         self.emptycontainer = wrd.wrad_obj.wradObjCnt([])
+        
+        self.basicblock = wrd.wrad_obj.wradObjThckPgn(0, 10, [[-5,5],[5,5],[5,-5],[-5,-5]],'x',[1,0,0])
     
-    def test_empty_container(self):
+    def test_object_list_present(self):
         np.testing.assert_equal(hasattr(self.emptycontainer, 'objectlist'),True)
+        
+    def test_default_object_list_empty(self):
+        np.testing.assert_equal(len(self.emptycontainer.objectlist), 0)
+        
+    def test_adding_to_container(self):
+        self.emptycontainer.wradObjAddToCnt([self.basicblock])
+        
+        np.testing.assert_equal(self.emptycontainer.objectlist, [self.basicblock])
+        
+        
+        
+    
         
         
 class Test_wradReflect_container(unittest.TestCase):    
