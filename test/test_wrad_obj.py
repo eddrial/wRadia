@@ -768,7 +768,7 @@ class Test_wradFieldRotate_container(unittest.TestCase):
             #self.test_containers[i] = wrd.wrad_obj.wradObjCnt([self.test_blocks[2*i]])
         
     def test_field_rotate_iterates_down(self):
-        self.test_containers[0].wradRotate([0,0,0],[1,0,0],np.pi)
+        self.test_containers[0].wradFieldRotate([0,0,0],[1,0,0],np.pi)
         np.testing.assert_equal(len(self.test_containers[0].objectlist), 2)
             
 class Test_wradRotate_container(unittest.TestCase):
