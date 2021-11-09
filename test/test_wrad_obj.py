@@ -23,6 +23,7 @@ class Test_wradObjThckPgn(unittest.TestCase):
     def test_wradObjThckPgn_exists(self):
         assert self.ax.radobj == 1
         
+        
 
     def test_wradObjThckPgn_corners(self):
         assert self.ax.corners == [[0,10],[10,10],[10,0],[0,0]]
@@ -80,7 +81,50 @@ class Test_wradMatAppl(unittest.TestCase):
     def test_wradMatAppl_magnetisation_overwrite(self):
         assert self.material.M == self.a.magnetisation
         
+class Test_wradObjDrwAtr(unittest.TestCase):
+    #wradObjDrwAtr. Drawing Attributes and Testing
+    def setUp(self):
+        self.ksi = [.019, .06]
+        self.M = [0,0,1.5]
+        self.material = wrd.wrad_mat.wradMatLin(self.ksi,self.M)
+        
+        self.a = wrd.wrad_obj.wradObjThckPgn(0, 5, [[0,10],[10,10],[10,0],[0,0]],'x',[1,2,3])
+        self.a.wradMatAppl(self.material)
+        
+    def test_wradObjDrwAtr_set_default_colour(self):
+        self.a.wradObjDrwAtr()
+        
+        np.testing.assert_equal(self.a.set_default_colour, True)
+        
+    def test_wradObjDrwAtr_default_colour(self):
+        self.a.wradObjDrwAtr()
+        
+        np.testing.assert_equal(self.a.colour, [0.5, 0.5, 0.875])
+        
+    def test_wradObjDrwAtr_set_non_default_colour(self):
+        self.a.wradObjDrwAtr(colour = [0.1,0.1,0.1])
+        
+        np.testing.assert_equal(self.a.set_default_colour, False)
+        
+    def test_wradObjDrwAtr_non_default_colour(self):
+        self.a.wradObjDrwAtr(colour = [0.1,0.1,0.1])
+        
+        np.testing.assert_equal(self.a.colour, [0.1, 0.1, 0.1])
+        
+        
+    def test_wradObjDrwAtr_default_line_thickness(self):
+        self.a.wradObjDrwAtr()
+        
+        np.testing.assert_equal(self.a.linethickness, 2)
+    
+    def test_wradObjDrwAtr_non_default_line_thickness(self):
+        self.a.wradObjDrwAtr(linethickness= 5)
+        
+        np.testing.assert_equal(self.a.linethickness, 5)
+    
+        
 class Test_wradSolve(unittest.TestCase):
+    
 
     def setUp(self):
         rd.UtiDelAll()
