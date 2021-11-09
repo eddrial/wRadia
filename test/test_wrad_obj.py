@@ -425,6 +425,21 @@ class Test_wradRotate_thickpolygon(unittest.TestCase):
         self.a.wradRotate([0,0,0], [0,0,1], 2*np.pi)
         self.a.wradSolve(0.001, 10000)
         np.testing.assert_almost_equal(self.a.magnetisation, [0.,0.,1.])
+        
+    def test_rotate_cube_field_x_axis_Z_bfield1(self):
+        self.a.wradFieldRotate([0,0,0], [1,0,0], np.pi/2.0)
+        self.a.wradSolve(0.001, 10000)
+        for i in range(-1,2,2):
+            with self.subTest(i = i):
+                b = rd.Fld(self.a.radobj,'bxbybz',[0,i*6.0,0])
+                np.testing.assert_almost_equal(b,[0,-0.3544116293114718,0])
+                
+    def test_rotate_cube_field_x_axis_Z_magnetisation1(self):
+        self.a.wradFieldRotate([0,0,0], [1,0,0], np.pi/2.0)
+        self.a.wradSolve(0.001, 10000)
+        np.testing.assert_almost_equal(self.a.magnetisation, [0.,-1.,0.])
+        
+        
 
     def test_wradRotate_thickpolygon_colour(self):
         #test the colour has rotated correctly
