@@ -765,10 +765,9 @@ class Test_wradRotate_container(unittest.TestCase):
         for i in range(3):
             self.test_containers[i] = wrd.wrad_obj.wradObjCnt([self.test_blocks[2*i],self.test_blocks[2*i + 1]])
         
-    def test_Rotate_container_no_colour(self):
-        self.test_containers[0].wradRotate([0,0,0],[0,0,1],4)
-        
-        np.testing.assert_equal(hasattr(self.test_containers[0],'colour'),False)
+    def test_rotate_iterates_down(self):
+        self.test_containers[0].wradRotate([0,0,0],[1,0,0],np.pi)
+        np.testing.assert_equal(len(self.test_containers[0].objectlist), 2)
         
 class Test_wradReflect_container(unittest.TestCase):    
     #wradRotate. Testing for thick polygons being rotated
@@ -937,7 +936,7 @@ class Test_wradTranslate_container(unittest.TestCase):
         for i in range(3):
             self.test_containers[i] = wrd.wrad_obj.wradObjCnt([self.test_blocks[2*i],self.test_blocks[2*i + 1]])
         
-    def test_iterates_down(self):
+    def test_translate_iterates_down(self):
         self.test_containers[0].wradTranslate([1,0,0])
         np.testing.assert_equal(len(self.test_containers[0].objectlist), 2)
         
