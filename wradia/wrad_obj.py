@@ -267,6 +267,10 @@ class wradObjCnt(object):
     #Container Methods
     def __init__(self,objectlist = []):
         self.objectlist = objectlist
+        self.objectlistradobj = []
+        
+        for i in range(len(objectlist)):
+            self.objectlistradobj.append(self.objectlist[i].radobj)
         
         self.radobj = rd.ObjCnt([])
         
@@ -276,22 +280,11 @@ class wradObjCnt(object):
     def wradObjAddToCnt(self, objectlist = []):
         #self.objectlist = objectlist
         
-        if hasattr(self,'objectlist'):
-            pass
-        else:
-            self.objectlist = objectlist
-        
-        if hasattr(self, 'objectlistradobj'):
-            pass
-        else:
-            self.objectlistradobj = []
         
         for i in range (len(objectlist)):
             self.objectlistradobj.append(objectlist[i].radobj)
             self.objectlist.append(objectlist[i])
         
-        
-            
         rd.ObjAddToCnt(self.radobj,self.objectlistradobj)
         
     
