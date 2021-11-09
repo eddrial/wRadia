@@ -1128,6 +1128,11 @@ class Test_wradMatAppl_container(unittest.TestCase):
         self.test_containers[0].wradObjDrwAtr()
         np.testing.assert_equal(mock.call_count,2)
         
+    @unittest.mock.patch.object(rd,"Solve")
+    def test_contSolve(self,mock):
+        self.test_containers[0].wradSolve()
+        mock.called_function()
+        
         
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.test_wradObjThckPgn_exists']

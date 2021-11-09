@@ -337,25 +337,8 @@ class wradObjCnt(object):
 #Graphics Methods
     def wradObjDrwAtr(self, colour = 'default', linethickness = 2):
         
-        try:
-            self.objectlist
-        except AttributeError:
-            pass
-        
         for obj in self.objectlist:
             obj.wradObjDrwAtr(colour = 'default', linethickness = 2)
-        
-#        if colour == 'default':
-#            self.set_default_colour = True
-#            colour = [(2 + y) / 4.0 for y in self.material.M]
-#        else: 
-#            self.set_default_colour = False
-        
-#        self.colour = colour
-#        self.linethickness = linethickness
-#        
-#        rd.ObjDrwAtr(self.radobj,self.colour, self.linethickness)
-        
         
 #solving methods
     def wradSolve(self, prec_r = 0.001, iter_r = 1000):
