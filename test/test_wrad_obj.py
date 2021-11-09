@@ -501,7 +501,7 @@ class Test_wradReflect_thickpolygon(unittest.TestCase):
         
     def test_reflect_cube_y_plane_X_magnetisation(self):
         
-        originalMagnetisation = self.blockxp.magnetisation
+        originalMagnetisation = copy.deepcopy(self.blockxp.magnetisation)
         self.blockxp.wradReflect([0,0,0], [0,1,0])
         np.testing.assert_almost_equal(self.blockxp.magnetisation, originalMagnetisation)
         
@@ -937,6 +937,9 @@ class Test_wradTranslate_container(unittest.TestCase):
         for i in range(3):
             self.test_containers[i] = wrd.wrad_obj.wradObjCnt([self.test_blocks[2*i],self.test_blocks[2*i + 1]])
         
+    def test_iterates_down(self):
+        self.test_containers[0].wradTranslate([1,0,0])
+        np.testing.assert_equal(len(self.test_containers[0].objectlist), 2)
         
 
 
