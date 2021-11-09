@@ -324,30 +324,6 @@ class wradObjCnt(object):
     def wradFieldRotate(self,pivot_origin, pivot_vector, rot_magnitude):
         '''trying to write a rotation function'''
         
-        #is this a container, or a primitive... check for object list
-        try:
-            self.objectlist
-        except AttributeError:
-            pass
-
-        #is colour applied at this level?
-        try:
-            self.colour
-            #if yes rotate colour
-            q = R.from_quat([pivot_vector[0] * np.sin(rot_magnitude/2.0), 
-                 pivot_vector[1] * np.sin(rot_magnitude/2.0),
-                 pivot_vector[2] * np.sin(rot_magnitude/2.0),
-                 np.cos(rot_magnitude/2.0),])
-            
-            tmpcol = [(4*x - 2) for x in self.colour]
-            
-            tmpcol = q.apply(tmpcol)
-            
-            self.colour = [(2+x) / 4.0 for x in tmpcol]
-            rd.ObjDrwAtr(self.radobj,self.colour, self.linethickness)
-        except:
-            pass
-        
         #recur down to overloaded function
         for obj in self.objectlist:
             obj.wradFieldRotate(pivot_origin, pivot_vector, rot_magnitude)
