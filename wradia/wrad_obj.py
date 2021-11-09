@@ -330,12 +330,6 @@ class wradObjCnt(object):
     
 #Material Methods
     def wradMatAppl(self, material):
-        try:
-            self.objectlist
-        except AttributeError:
-            self.material = material
-            rd.MatApl(self.radobj,material.radobj)
-        
         for obj in self.objectlist:
             obj.wradMatAppl(material)
         

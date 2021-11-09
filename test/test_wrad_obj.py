@@ -1120,9 +1120,14 @@ class Test_wradMatAppl_container(unittest.TestCase):
     
     @unittest.mock.patch.object(wradObjThckPgn,"wradMatAppl")
     def test_contMatAppl(self,mock):
-        self.test_containers[0].wradMatAppl(self.materials[0])
-        #mock.assert_called()    
+        self.test_containers[0].wradMatAppl(self.materials[0])   
         np.testing.assert_equal(mock.call_count,2)
+    
+    @unittest.mock.patch.object(wradObjThckPgn,"wradObjDrwAtr")    
+    def test_contObjDrwAttr(self,mock):
+        self.test_containers[0].wradObjDrwAtr()
+        np.testing.assert_equal(mock.call_count,2)
+        
         
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.test_wradObjThckPgn_exists']
