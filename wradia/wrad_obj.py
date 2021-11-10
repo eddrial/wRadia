@@ -453,21 +453,21 @@ class wradObjCnt(object):
         ax5.set_aspect('equal')
         
         
-if __name__ == '__main__':
-    tr = 5
-    ve = 3
-    
-    x = wradObjThckPgn(2,2,[[-tr,-ve],[-tr,ve],[tr,ve],[tr,-ve]],'x',[4,3,2])
-    print(x.vertices)
-    
-    y = wradObjThckPgn(2,2,[[-tr,-ve],[-tr,ve],[tr,ve],[tr,-ve]],'y',[4,3,2])
-    print(y.vertices)
-    
-    z = wradObjThckPgn(2,2,[[-tr,-ve],[-tr,ve],[tr,ve],[tr,-ve]],'z',[4,3,2])
-    print(z.vertices)
-    
-    rd.ObjDrwOpenGL(x.radobj)
-    rd.ObjDrwOpenGL(y.radobj)
-    rd.ObjDrwOpenGL(z.radobj)
-    
-    input("Press Enter to continue...")
+#if __name__ == '__main__':
+#    tr = 5
+#    ve = 3
+#    
+#    x = wradObjThckPgn(2,2,[[-tr,-ve],[-tr,ve],[tr,ve],[tr,-ve]],'x',[4,3,2])
+#    print(x.vertices)
+#    
+#    y = wradObjThckPgn(2,2,[[-tr,-ve],[-tr,ve],[tr,ve],[tr,-ve]],'y',[4,3,2])
+#    print(y.vertices)
+#    
+#    z = wradObjThckPgn(2,2,[[-tr,-ve],[-tr,ve],[tr,ve],[tr,-ve]],'z',[4,3,2])
+#    print(z.vertices)
+#    
+#    rd.ObjDrwOpenGL(x.radobj)
+#    rd.ObjDrwOpenGL(y.radobj)
+#    rd.ObjDrwOpenGL(z.radobj)
+#    
+#    input("Press Enter to continue...")
