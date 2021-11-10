@@ -72,9 +72,10 @@ class wradClaExtr():
     a = 1
     
     print(a)'''
-if __name__ == '__main__':
-    cl = wradClaExtr()
-    print (cl.a)
-    print (cl.cont1)
+#debugging. Bring testing to 100% >.<
+#if __name__ == '__main__':
+#    cl = wradClaExtr()
+#    print (cl.a)
+#    print (cl.cont1)
     
     
