@@ -35,11 +35,14 @@ class wradObjThckPgn(object):
         self.magnetisation = magnetisation
         
         self.vertices = np.zeros((2*len(corners),3))
+        self.polygons = [[] for _ in range (2 + len(corners))]
         
         if self.extrusion_direction == 'x':
             for i in range(len(corners)):
                 self.vertices[i,:] = np.array([self.x - self.lx/2.0,corners[i][0],corners[i][1]])
                 self.vertices[i+len(corners),:] = np.array([self.x + self.lx/2.0,corners[i][0],corners[i][1]])
+            
+            
         elif self.extrusion_direction == 'y':
             for i in range(len(corners)):
                 self.vertices[i,:] = np.array([corners[i][1],self.x - self.lx/2.0,corners[i][0]])
@@ -48,6 +51,13 @@ class wradObjThckPgn(object):
             for i in range(len(corners)):
                 self.vertices[i,:] = np.array([corners[i][0],corners[i][1],self.x - self.lx/2.0])
                 self.vertices[i+len(corners),:] = np.array([corners[i][0],corners[i][1],self.x + self.lx/2.0])
+        
+        self.polygons[0] =  np.arange(len(corners))
+        self.polygons[1] = np.arange(len(corners),2*len(corners))
+        
+        n = len(corners)
+        for i in range(n):
+            self.polygons[i+2] = np.array([i,n+i,n+((i+1)%n),(i+1)%n])
         
         self.radobj = rd.ObjThckPgn(self.x, self.lx, self.corners,self.extrusion_direction, self.magnetisation)
         

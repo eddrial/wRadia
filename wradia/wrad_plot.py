@@ -7,6 +7,7 @@ import radia as rd
 import numpy as np
 import copy
 from wradia import wrad_mat as wrdm
+import wradia as wrd
 from scipy.spatial.transform import Rotation as R
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
@@ -18,13 +19,17 @@ class wradPlot(object):
     '''
 
 
-    def __init__(self, params):
+    def __init__(self, model, plottype = '', outline = False):
         '''
         Constructor
         '''
+        self.model = model
+        self.plottype = plottype
+        
         
     #streamplotting
     def wradStreamPlot(self,corner1 = np.array([-10,0,-10]), corner2 = np.array([10,0,10]), fields = 'bxbz'):
+        self.plottype = 'streamplot'
         
         #region of V magnets
         Zv, Xv = np.mgrid[20:40:41j, -10:10:41j]
@@ -34,7 +39,7 @@ class wradPlot(object):
         for i in range(len(Xv)):
             for j in range(len(Zv)):
                 #print ('coords are {}'.format([Xv[i,j],Zv[i,j]]))
-                Bxv[i,j],Bzv[i,j] = rd.Fld(self.radobj,'bxbz',[Xv[i,j],0,Zv[i,j]]) 
+                Bxv[i,j],Bzv[i,j] = rd.Fld(self.model.radobj,'bxbz',[Xv[i,j],0,Zv[i,j]]) 
                 #print ('the field at those coords are Bx: {} Bz: {}'.format(Bxv[i,j],Bzv[i,j]))
         
         fig = plt.figure(figsize=(7, 9))
@@ -45,8 +50,8 @@ class wradPlot(object):
         ax0.streamplot(Xv, Zv, Bxv, Bzv, density=[0.5, 1])
         for i in range(2):
             for j in range(4,7,2):
-                ax0.plot(self.objectlist[j].objectlist[0].objectlist[0].objectlist[i].vertices[:,0],
-                         self.objectlist[j].objectlist[0].objectlist[0].objectlist[i].vertices[:,2], color = 'k')
+                ax0.plot(self.model.objectlist[j].objectlist[0].objectlist[0].objectlist[i].vertices[:,0],
+                         self.model.objectlist[j].objectlist[0].objectlist[0].objectlist[i].vertices[:,2], color = 'k')
         ax0.set_title('Vertical Comp Magnets')
         
         ax0.set_aspect('equal')
@@ -127,3 +132,13 @@ class wradPlot(object):
                 ax5.plot(self.objectlist[j].objectlist[0].objectlist[0].objectlist[i].vertices[:,0],
                          self.objectlist[j].objectlist[0].objectlist[0].objectlist[i].vertices[:,2], color = 'k')
         ax5.set_aspect('equal')
+        
+if __name__ == '__main__':
+
+    tr = 5
+    ve = 3
+    
+    x = wrd.wrad_obj.wradObjThckPgn(2,2,[[-tr,-ve],[-tr,ve],[tr,ve],[tr,-ve]],'x',[4,3,2])
+    
+    plotit = wradPlot(x, 'streamplot')
+    plotit.wradStreamPlot()

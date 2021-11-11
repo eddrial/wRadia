@@ -21,6 +21,8 @@ class Test_wradObjThckPgn(unittest.TestCase):
         self.ax = wrd.wrad_obj.wradObjThckPgn(0, 5, [[0,10],[10,10],[10,0],[0,0]],'x',[1,2,3])
         self.ay = wrd.wrad_obj.wradObjThckPgn(0, 5, [[0,10],[10,10],[10,0],[0,0]],'y',[1,2,3])
         self.az = wrd.wrad_obj.wradObjThckPgn(0, 5, [[0,10],[10,10],[10,0],[0,0]],'z',[1,2,3])
+        
+        self.pentagon = wrd.wrad_obj.wradObjThckPgn(0, 5, [[0,10],[10,10],[12,5],[10,0],[0,0]],'z',[1,2,3])
     ###wradObjThckPgn athenaii tests
     def test_wradObjThckPgn_exists(self):
         assert self.ax.radobj == 1
@@ -29,6 +31,9 @@ class Test_wradObjThckPgn(unittest.TestCase):
 
     def test_wradObjThckPgn_corners(self):
         assert self.ax.corners == [[0,10],[10,10],[10,0],[0,0]]
+        
+    def test_wradObjThckPgn_pentagon_corners(self):
+        assert self.pentagon.corners == [[0,10],[10,10],[12,5],[10,0],[0,0]]
         
     def test_wradObjThckPgn_extrusion_direction(self):
 
