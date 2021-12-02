@@ -31,6 +31,16 @@ RUN pip3 install --no-cache-dir --upgrade \
         mpi4py && \
     rm -rf /tmp/* && \
     find /usr/lib/python3.*/ -name 'tests' -exec rm -rf '{}' +
+    
+# Build radia (only need radia.so on the the PYTHONPATH)
+RUN mkdir -p /tmp/radia && \
+    git clone https://github.com/ochubar/Radia.git /tmp/radia && \
+    make -C /tmp/radia/cpp/gcc all && \
+    make -C /tmp/radia/cpp/py && \
+    mkdir -p /usr/local/radia && \
+    cp /tmp/radia/env/radia_python/radia.so /usr/local/radia/radia.so  && \
+    rm -rf /tmp/*
+ENV PYTHONPATH="/usr/local/radia:${PYTHONPATH}"
 
 # Install wRadia
 ADD . /usr/local/wRadia
